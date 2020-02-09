@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include('swipeme.urls')),
-    path('api/', include('api.urls')),
+    path('api/v1/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
 
