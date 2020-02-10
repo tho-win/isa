@@ -1,1 +1,41 @@
-[{"model": "swipeme.school", "pk": 4, "fields": {"name": "UVA", "city": "Charlottesville", "state": "Virginia"}}, {"model": "contenttypes.contenttype", "pk": 1, "fields": {"app_label": "swipeme", "model": "school"}}, {"model": "contenttypes.contenttype", "pk": 2, "fields": {"app_label": "users", "model": "customuser"}}, {"model": "contenttypes.contenttype", "pk": 3, "fields": {"app_label": "users", "model": "profile"}}, {"model": "contenttypes.contenttype", "pk": 4, "fields": {"app_label": "admin", "model": "logentry"}}, {"model": "contenttypes.contenttype", "pk": 5, "fields": {"app_label": "auth", "model": "permission"}}, {"model": "contenttypes.contenttype", "pk": 6, "fields": {"app_label": "auth", "model": "group"}}, {"model": "contenttypes.contenttype", "pk": 7, "fields": {"app_label": "contenttypes", "model": "contenttype"}}, {"model": "contenttypes.contenttype", "pk": 8, "fields": {"app_label": "sessions", "model": "session"}}, {"model": "auth.permission", "pk": 1, "fields": {"name": "Can add school", "content_type": ["swipeme", "school"], "codename": "add_school"}}, {"model": "auth.permission", "pk": 2, "fields": {"name": "Can change school", "content_type": ["swipeme", "school"], "codename": "change_school"}}, {"model": "auth.permission", "pk": 3, "fields": {"name": "Can delete school", "content_type": ["swipeme", "school"], "codename": "delete_school"}}, {"model": "auth.permission", "pk": 4, "fields": {"name": "Can view school", "content_type": ["swipeme", "school"], "codename": "view_school"}}, {"model": "auth.permission", "pk": 5, "fields": {"name": "Can add user", "content_type": ["users", "customuser"], "codename": "add_customuser"}}, {"model": "auth.permission", "pk": 6, "fields": {"name": "Can change user", "content_type": ["users", "customuser"], "codename": "change_customuser"}}, {"model": "auth.permission", "pk": 7, "fields": {"name": "Can delete user", "content_type": ["users", "customuser"], "codename": "delete_customuser"}}, {"model": "auth.permission", "pk": 8, "fields": {"name": "Can view user", "content_type": ["users", "customuser"], "codename": "view_customuser"}}, {"model": "auth.permission", "pk": 9, "fields": {"name": "Can add profile", "content_type": ["users", "profile"], "codename": "add_profile"}}, {"model": "auth.permission", "pk": 10, "fields": {"name": "Can change profile", "content_type": ["users", "profile"], "codename": "change_profile"}}, {"model": "auth.permission", "pk": 11, "fields": {"name": "Can delete profile", "content_type": ["users", "profile"], "codename": "delete_profile"}}, {"model": "auth.permission", "pk": 12, "fields": {"name": "Can view profile", "content_type": ["users", "profile"], "codename": "view_profile"}}, {"model": "auth.permission", "pk": 13, "fields": {"name": "Can add log entry", "content_type": ["admin", "logentry"], "codename": "add_logentry"}}, {"model": "auth.permission", "pk": 14, "fields": {"name": "Can change log entry", "content_type": ["admin", "logentry"], "codename": "change_logentry"}}, {"model": "auth.permission", "pk": 15, "fields": {"name": "Can delete log entry", "content_type": ["admin", "logentry"], "codename": "delete_logentry"}}, {"model": "auth.permission", "pk": 16, "fields": {"name": "Can view log entry", "content_type": ["admin", "logentry"], "codename": "view_logentry"}}, {"model": "auth.permission", "pk": 17, "fields": {"name": "Can add permission", "content_type": ["auth", "permission"], "codename": "add_permission"}}, {"model": "auth.permission", "pk": 18, "fields": {"name": "Can change permission", "content_type": ["auth", "permission"], "codename": "change_permission"}}, {"model": "auth.permission", "pk": 19, "fields": {"name": "Can delete permission", "content_type": ["auth", "permission"], "codename": "delete_permission"}}, {"model": "auth.permission", "pk": 20, "fields": {"name": "Can view permission", "content_type": ["auth", "permission"], "codename": "view_permission"}}, {"model": "auth.permission", "pk": 21, "fields": {"name": "Can add group", "content_type": ["auth", "group"], "codename": "add_group"}}, {"model": "auth.permission", "pk": 22, "fields": {"name": "Can change group", "content_type": ["auth", "group"], "codename": "change_group"}}, {"model": "auth.permission", "pk": 23, "fields": {"name": "Can delete group", "content_type": ["auth", "group"], "codename": "delete_group"}}, {"model": "auth.permission", "pk": 24, "fields": {"name": "Can view group", "content_type": ["auth", "group"], "codename": "view_group"}}, {"model": "auth.permission", "pk": 25, "fields": {"name": "Can add content type", "content_type": ["contenttypes", "contenttype"], "codename": "add_contenttype"}}, {"model": "auth.permission", "pk": 26, "fields": {"name": "Can change content type", "content_type": ["contenttypes", "contenttype"], "codename": "change_contenttype"}}, {"model": "auth.permission", "pk": 27, "fields": {"name": "Can delete content type", "content_type": ["contenttypes", "contenttype"], "codename": "delete_contenttype"}}, {"model": "auth.permission", "pk": 28, "fields": {"name": "Can view content type", "content_type": ["contenttypes", "contenttype"], "codename": "view_contenttype"}}, {"model": "auth.permission", "pk": 29, "fields": {"name": "Can add session", "content_type": ["sessions", "session"], "codename": "add_session"}}, {"model": "auth.permission", "pk": 30, "fields": {"name": "Can change session", "content_type": ["sessions", "session"], "codename": "change_session"}}, {"model": "auth.permission", "pk": 31, "fields": {"name": "Can delete session", "content_type": ["sessions", "session"], "codename": "delete_session"}}, {"model": "auth.permission", "pk": 32, "fields": {"name": "Can view session", "content_type": ["sessions", "session"], "codename": "view_session"}}, {"model": "users.customuser", "pk": 1, "fields": {"password": "", "last_login": null, "is_superuser": false, "username": "haoranzhu", "email": "hz3fr@virginia.edu", "is_staff": false, "is_active": true, "date_joined": "2020-02-10T21:16:10.722Z", "first_name": "Haoran", "last_name": "Zhu", "phone_number": "4344662282", "bio": "Hi, I am Haoran.", "groups": [], "user_permissions": []}}, {"model": "users.profile", "pk": 1, "fields": {"user": ["haoranzhu"], "image": "default.png", "joined_date": "2020-02-10"}}]
+[
+{
+    "model": "swipeme.school",
+    "pk": 1,
+    "fields": {
+        "name": "UVA",
+        "city": "Charlottesville",
+        "state": "Virginia"
+    }
+},
+{
+    "model": "users.customuser",
+    "fields": {
+        "password": "",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "haoranzhu",
+        "email": "hz3fr@virginia.edu",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-02-10T21:39:54.723Z",
+        "first_name": "Haoran",
+        "last_name": "Zhu",
+        "phone_number": "4344662282",
+        "bio": "Hi",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.profile",
+    "pk": 1,
+    "fields": {
+        "user": [
+            "haoranzhu"
+        ],
+        "image": "default.png",
+        "joined_date": "2020-02-10"
+    }
+}
+]
