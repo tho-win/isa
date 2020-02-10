@@ -5,7 +5,7 @@ from swipeme import models as swipeme_models
 class CustomUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = users_models.CustomUser
-        fields = ('username', 'email', 'first_name', 'last_name', 'phone_number', 'bio')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'phone_number', 'bio')
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
