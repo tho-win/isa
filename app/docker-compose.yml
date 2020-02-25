@@ -6,7 +6,7 @@ services:
     external_links:
       - mysql:db
     volumes:
-      - ./foo:/app
+      - ./models:/app
     ports:
       - "8001:8000"
     networks:
@@ -14,7 +14,7 @@ services:
     command: bash -c "pip install djangorestframework && pip install Pillow &&
                 python manage.py makemigrations && python manage.py migrate &&
                 python manage.py loaddata db.json &&
-                mod_wsgi-express start-server --working-directory . --reload-on-changes ./foo/wsgi.py"
+                mod_wsgi-express start-server --working-directory . --reload-on-changes ./models/wsgi.py"
 
 networks:
   backend:

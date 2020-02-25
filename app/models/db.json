@@ -1,0 +1,22 @@
+[
+{
+    "model": "api.school",
+    "pk": 1,
+    "fields": {
+        "name": "UVA",
+        "city": "Charlottesville",
+        "state": "Virginia"
+    }
+},
+{
+    "model": "api.customuser",
+    "fields": {
+        "username": "haoranzhu",
+        "email": "hz3fr@virginia.edu",
+        "first_name": "Haoran",
+        "last_name": "Zhu",
+        "phone_number": "4344662282",
+        "bio": "Hi"
+    }
+}
+]

@@ -1,17 +1,20 @@
-import datetime
+from datetime import datetime
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
-class CustomUser(AbstractUser):
+class CustomUser(models.Model):
+    username = models.CharField(max_length=20, blank=True)
     first_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=True)
+    email = models.CharField(max_length=50, blank=True)
     phone_number = models.CharField(max_length=20, blank=True)
     bio = models.TextField(max_length=100, blank=True)
+    date_joined = models.DateTimeField(default=datetime.now, blank=True)
+    profile_image = models.ImageField(default='default.png', upload_to='media/profile_pics')
     
     def __str__(self):
     	return self.username
 
-
+"""
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(default='default.png', upload_to='profile_pics')
@@ -22,3 +25,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username + ' Profile'
+"""
+class School(models.Model):
+    name = models.CharField(max_length=300)
+    city = models.CharField(max_length=200)
+    state = models.CharField(max_length=200)
+
+    def __str__(self):
+    	return self.name
