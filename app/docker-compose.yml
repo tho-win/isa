@@ -6,7 +6,7 @@ services:
     external_links:
       - mysql:db
     volumes:
-      - .:/app
+      - ./foo:/app
     ports:
       - "8001:8000"
     networks:
