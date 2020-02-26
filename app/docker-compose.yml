@@ -3,18 +3,45 @@ services:
 
   models:
     image: tp33/django
+    container_name: models
     external_links:
       - mysql:db
+    networks:
+      - backend
+      - service_mesh
     volumes:
       - ./models:/app
     ports:
       - "8001:8000"
-    networks:
-      - backend
     command: bash -c "pip install djangorestframework && pip install Pillow &&
                 python manage.py makemigrations && python manage.py migrate &&
                 python manage.py loaddata db.json &&
                 mod_wsgi-express start-server --working-directory . --reload-on-changes ./models/wsgi.py"
 
+  exp:
+    image: tp33/django
+    container_name: exp
+    networks: 
+      - service_mesh
+      - public
+    volumes:
+      - ./exp:/app
+    ports:
+      - "8002:8000"
+    command: "mod_wsgi-express start-server --working-directory . --reload-on-changes ./exp/wsgi.py"
+
+  web:
+    image: tp33/django
+    container_name: web
+    networks:
+      - public
+    volumes:
+      - ./web:/app
+    ports:
+      - "8000:8000"
+    command: "mod_wsgi-express start-server --working-directory . --reload-on-changes ./web/wsgi.py"
+
 networks:
   backend:
+  service_mesh:
+  public:
