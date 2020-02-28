@@ -1,0 +1,22 @@
+[
+{
+    "model": "api.School",
+    "pk": 1,
+    "fields": {
+        "name": "UVA",
+        "city": "Charlottesville",
+        "state": "Virginia"
+    }
+},
+{
+    "model": "api.CustomUser",
+    "fields": {
+        "username": "testUser",
+        "email": "test@virginia.edu",
+        "first_name": "Test",
+        "last_name": "User",
+        "phone_number": "1234567890",
+        "bio": "Hi, I am created by fixture."
+    }
+}
+]
