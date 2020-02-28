@@ -1,13 +1,14 @@
-from datetime import datetime
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
+    password = models.CharField(max_length=100, default="password")
     first_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=True)
     phone_number = models.CharField(max_length=20, blank=True)
     bio = models.TextField(max_length=100, blank=True)
-    date_joined = models.DateTimeField(default=datetime.now, blank=True)
+    date_joined = models.DateTimeField(default=timezone.now, blank=True)
     profile_image = models.ImageField(default='default.png', upload_to='profile_pics')
     
     def __str__(self):
