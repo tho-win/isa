@@ -1,0 +1,11 @@
+{% if users %}
+All Users
+    <ul>
+    {% for key, value in users.items %}
+        <h4><a href="{% url 'frontend:user_detail' value.id %}"> {{ key }} </a></h4>
+        <li>{{ value.bio }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+NO users present.
+{% endif %}
