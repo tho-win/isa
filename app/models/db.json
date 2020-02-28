@@ -1,6 +1,6 @@
 [
 {
-    "model": "api.school",
+    "model": "api.School",
     "pk": 1,
     "fields": {
         "name": "UVA",
@@ -9,14 +9,14 @@
     }
 },
 {
-    "model": "api.customuser",
+    "model": "api.CustomUser",
     "fields": {
-        "username": "haoranzhu",
-        "email": "hz3fr@virginia.edu",
-        "first_name": "Haoran",
-        "last_name": "Zhu",
-        "phone_number": "4344662282",
-        "bio": "Hi"
+        "username": "testUser",
+        "email": "test@virginia.edu",
+        "first_name": "Test",
+        "last_name": "User",
+        "phone_number": "1234567890",
+        "bio": "Hi, I am created by fixture."
     }
 }
 ]
