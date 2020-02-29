@@ -1,11 +1,14 @@
 from django.urls import include, path
 from rest_framework import routers
-from .views import *
 from api import views
+from .views import *
+
 
 router = routers.DefaultRouter()
 router.register(r'user', CustomUserViewSet)
+router.register(r'post', PostViewSet)
 router.register(r'school', SchoolViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),

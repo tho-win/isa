@@ -4,7 +4,6 @@ import urllib.request
 import urllib.parse
 import json
 
-# Create your views here.
 def show_all_users(request):
     req = urllib.request.Request('http://models:8000/api/v1/user/')
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')

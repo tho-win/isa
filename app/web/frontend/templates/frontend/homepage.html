@@ -1,2 +1,15 @@
-<h1>Homepage</h1>
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : Home
+{% endblock title %} 
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'frontend/homepage.css' %}">
+{% endblock head %}
+
+{% block content %}
+<h1 class="home">Homepage</h1>
 <a href="{% url 'frontend:show_all_users' %}">Discover users</a>
+{% endblock content %}
