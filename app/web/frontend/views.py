@@ -4,7 +4,6 @@ import urllib.request
 import urllib.parse
 import json
 
-# Create your views here.
 
 def homepage(request):
     return render(request, 'frontend/homepage.html')
