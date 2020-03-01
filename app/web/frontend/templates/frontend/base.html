@@ -27,14 +27,14 @@
 
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#" style="margin-left: 11%">UVA SwipeMe</a>
+  <a class="navbar-brand" href="{% url 'frontend:homepage' %}" style="margin-left: 11%">UVA SwipeMe</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin-left: 50%">
     <ul class="navbar-nav" style="text-align:right">
       <li class="nav-item" type="link">
-        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="{% url 'frontend:homepage' %}">Home</a>
       </li>
         </li>
         <li class="nav-item" type="link">
@@ -52,7 +52,7 @@
 
 <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
   <div class="container text-center">
-    <small>Copyright &copy; OutLawz · Powered by <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>, <a
+    <small>Copyright &copy; SwipeMe · Powered by <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>, <a
         href="https://www.w3schools.com" target="_blank">W3Schools</a></small>
   </div>
 </footer>

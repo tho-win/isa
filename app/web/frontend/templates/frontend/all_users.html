@@ -1,0 +1,36 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : All Users
+{% endblock title %} 
+
+{% block content %}
+<div class="note" style="margin: 0% 0 0 5%">
+    <small>
+        <i>Note: This page contains some basic info about all users and was created during development solely for demo purpose. So this page is essentially a more reader-friendly version of User api.</i>
+    </small> <br>
+    <small >
+        <i>This page is static. To view the newest update, please refresh this page.</i>
+    </small>    
+</div>
+
+{% if users %}
+	<div style="margin: 2% 40% 3% 5%">
+		<h4 style="border-bottom:1px solid #ccc!important;">All Users</h4>
+		<ul style="margin-top: 2%">
+    		{% for key, value in users.items %}
+        		<h4><a href="{% url 'frontend:user_detail' value.id %}"> {{ key }} </a></h4>
+        		<li>Name: {{ value.first_name }} {{ value.last_name }}</li>
+        		<li>Email: {{ value.email }}</li>
+        		<li>Computing ID: {{ value.computing_id }}</li>
+        		<li>Phone Number: {{ value.phone_number }}</li>
+   				<li style="margin-bottom: 2%">{{ value.bio }}</li>
+    		{% endfor %}
+    	</ul>
+	</div>
+{% else %}
+	<h1 style="text-align: center">No users present.</h1>
+{% endif %}
+{% endblock content%}
+

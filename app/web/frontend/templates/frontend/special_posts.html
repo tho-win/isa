@@ -1,0 +1,45 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : Posts
+{% endblock title %} 
+
+{% block content %}
+<div style="margin: 2% 40% 0 5%">
+	<div>
+		<div class="latest_post">
+			<h4 style="border-bottom:1px solid #ccc!important;">Latest Post</h4>
+			<b>{{ latest_post.title }}</b> <small>posted by</small> <b>{{ latest_post.seller }}</b> <br>
+			<em>{{ latest_post.content }}</em> <br>
+			<ul>
+				<li>Pick-up Address: {{ latest_post.pickup_address }}</li>
+				<li>Price: ${{ latest_post.price }}</li>
+				<li>Available Swipes: <b style="color: red">{{ latest_post.remaining_nums }}</b></li>
+			</ul>
+		</div>
+
+		<div class="cheapest_post" style="margin-top: 30px">
+			<h4 style="border-bottom:1px solid #ccc!important;">Post with Lowest Price</h4>
+			<b>{{ cheapest_post.title }}</b> <small>posted by</small> <b>{{ cheapest_post.seller }}</b> <br>
+			<em>{{ cheapest_post.content }}</em><br>
+			<ul>
+				<li>Pick-up Address: {{ cheapest_post.pickup_address }}</li>
+				<li>Price: ${{ cheapest_post.price }}</li>
+				<li>Available Swipes: <b style="color: red">{{ cheapest_post.remaining_nums }}</b></li>
+			</ul>
+		</div>
+
+		<div class="most_swipe_post" style="margin-top: 30px">
+			<h4 style="border-bottom:1px solid #ccc!important;" >Post with Most Remaining Swipes</h4>
+			<b>{{ most_swipe_post.title }}</b> <small>posted by</small> <b>{{ most_swipe_post.seller }}</b> <br>
+			<em>{{ most_swipe_post.content }}</em><br>
+			<ul>
+				<li>Pick-up Address: {{ most_swipe_post.pickup_address }}</li>
+				<li>Price: ${{ most_swipe_post.price }}</li>
+				<li>Available Swipes: <b style="color: red">{{ most_swipe_post.remaining_nums }}</b></li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock content %}
