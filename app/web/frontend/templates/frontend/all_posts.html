@@ -1,0 +1,35 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : All Posts
+{% endblock title %} 
+
+{% block content %}
+<small style="margin: 1% 0 0 5%">
+	<i>Note: This page contains some basic info about all the posts. So this is essentially a more reader-friendly version of Post api. 
+	This page is static. To view the newest update, please refresh this page.</i>
+</small>
+
+{% if posts %}
+	<div style="margin: 2% 40% 0% 5%">
+		<h4 style="border-bottom:1px solid #ccc!important">All Posts</h4>
+		<ul>
+    		{% for post in posts %}
+    		<div style="margin-top: 3%">
+    			<b>{{ post.title }}</b> <small>posted by</small> <b>{{ post.seller }}</b> <br>
+        		<em>{{ post.content }}</em> <br>
+        		<ul>
+        			<li>Posted on: {{ post.pub_date }}</li>
+					<li>Pick-up Address: {{ post.pickup_address }}</li>
+					<li>Price: ${{ post.price }}</li>
+					<li>Available Swipes: <b style="color: red">{{ post.remaining_nums }}</b></li>
+				</ul>
+    		</div>
+    		{% endfor %}
+    	</ul>
+	</div>
+{% else %}
+	<h1 style="text-align: center">No posts present.</h1>
+{% endif %}
+{% endblock content%}

@@ -8,7 +8,7 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=20, blank=True)
     computing_id = models.CharField(max_length=10, default="")
     phone_number = models.CharField(max_length=20, blank=True)
-    bio = models.TextField(max_length=100, blank=True)
+    bio = models.TextField(max_length=500, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
     profile_image = models.ImageField(default='default.png', upload_to='profile_pics')
     
@@ -33,7 +33,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100, default="")
     content = models.TextField(max_length=3000, default="")
     pub_date = models.DateTimeField(default=timezone.now)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.FloatField()
     # remaining swipes the seller wants to sell
     remaining_nums = models.IntegerField()
     # the location where seller will meet the buyer and swipe him/her in
