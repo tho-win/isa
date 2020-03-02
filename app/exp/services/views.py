@@ -28,3 +28,11 @@ def user_detail(request, uid):
     resp = json.loads(resp_json)
     print(resp)
     return JsonResponse(resp, safe=False)
+
+def post_detail(request, pid):
+    url = 'http://models:8000/api/v1/post/' + str(pid) + "/"
+    req = urllib.request.Request(url)
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    print(resp)
+    return JsonResponse(resp, safe=False)

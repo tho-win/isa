@@ -1,0 +1,21 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : Post Detail
+{% endblock title %} 
+
+
+{% block content %}
+
+{% if user %}
+    <ul>
+    {% for key, value in post.items %}
+        <li>{{ key }}: {{ value }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+NO post found.
+{% endif %}
+
+{% endblock content %}

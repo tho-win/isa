@@ -7,7 +7,10 @@ import json
 
 
 def homepage(request):
-    return render(request, 'frontend/homepage.html')
+    all_posts_req = urllib.request.Request('http://exp:8000/posts/')
+    all_posts_resp_json = urllib.request.urlopen(all_posts_req).read().decode('utf-8')
+    all_posts_resp = json.loads(all_posts_resp_json)
+    return render(request, 'frontend/homepage.html', {'posts': all_posts_resp})
 
 def show_all_users(request):
     req = urllib.request.Request('http://exp:8000/users/')
@@ -59,3 +62,10 @@ def show_special_posts(request):
 
     return render(request, 'frontend/special_posts.html', {'latest_post' : latest_post, 
                                                 "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post})
+
+def post_detail(request, pid):
+    url = 'http://exp:8000/posts/' + str(pid) + "/"
+    req = urllib.request.Request(url)
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    return render(request, "frontend/post_detail.html", {'post': resp})

@@ -32,6 +32,22 @@ UVA SwipeMe : Home
 	</h5>
 
 	<a href="{% url 'frontend:show_all_users' %}">View all users</a> <br>
+	{% if posts %}
+	<div style="margin: 2% 40% 0% 5%">
+		<h4 style="border-bottom:1px solid #ccc!important">All Posts</h4>
+		<ul>
+    		{% for post in posts %}
+    		<div style="margin-top: 3%">
+    			<b><a href="{% url 'frontend:post_detail' post.id %}">{{ post.title }}</a></b>
+        		<ul>
+					<li>Pick-up Address: {{ post.pickup_address }}</li>
+					<li>Price: ${{ post.price }}</li>
+				</ul>
+    		</div>
+    		{% endfor %}
+    	</ul>
+	</div>
+	{% endif %}
 	<a href="{% url 'frontend:show_all_posts' %}">View all posts</a> <br>
 	<a href="{% url 'frontend:show_special_posts' %}">Discover posts</a> <br>
 
