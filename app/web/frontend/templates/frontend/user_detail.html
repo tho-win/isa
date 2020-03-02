@@ -1,3 +1,13 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : User Detail
+{% endblock title %} 
+
+
+{% block content %}
+
 {% if user %}
     <ul>
     {% for key, value in user.items %}
@@ -7,3 +17,5 @@
 {% else %}
 NO users present.
 {% endif %}
+
+{% endblock content %}

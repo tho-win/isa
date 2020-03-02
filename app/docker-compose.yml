@@ -15,6 +15,7 @@ services:
       - "8001:8000"
     command: bash -c "pip install --upgrade pip && pip install djangorestframework && pip install Pillow &&
                 python manage.py makemigrations && python manage.py migrate &&
+                python manage.py test &&
                 python manage.py loaddata db.json &&
                 mod_wsgi-express start-server --working-directory . --reload-on-changes ./models/wsgi.py"
 
