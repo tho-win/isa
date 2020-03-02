@@ -3,11 +3,10 @@ from rest_framework import routers
 from api import views
 from .views import *
 
-
 router = routers.DefaultRouter()
-router.register(r'user', CustomUserViewSet)
-router.register(r'post', PostViewSet)
-router.register(r'school', SchoolViewSet)
+router.register(r'user', CustomUserViewSet, basename="customuser")
+router.register(r'post', PostViewSet, basename="post")
+router.register(r'school', SchoolViewSet, basename="school")
 
 
 urlpatterns = [

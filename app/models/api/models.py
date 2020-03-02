@@ -1,6 +1,8 @@
+from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+import datetime
+
 
 class CustomUser(AbstractUser):
     password = models.CharField(max_length=100, default="password")
@@ -14,6 +16,11 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
     	return self.username
+
+    def create_post(self, title: str, content: str, price: float, swipes: int):
+        post = Post.objects.create(title=title, seller=self, content=content, price=price, remaining_nums=swipes)
+        post.save()
+        return post
 
 
 # class Profile(models.Model):
