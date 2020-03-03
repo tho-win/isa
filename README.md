@@ -4,9 +4,19 @@ Contact Info:
 
 Tho Nguyen (tnn7yc@virginia.edu); Erik Toor (evt8ed@virginia.edu); Haoran Zhu (hz3fr@virginia.edu)
 
+Frontend:
+
+http://localhost:8000/ is the homepage.
+
+http://localhost:8000/users/ shows some basic info about all users available in the dataset for demo purposes.
+
+http://localhost:8000/posts/ shows some basic info about all posts available in the dataset for demo purposes.
+
+http://localhost:8000/specialposts shows the latest post, post with most remaining swipes and lowest prices.
+
 Services:
 
-As of 2/10/2020, the API supports services for User, Profile and School models:
+As of 03/02/2020, the API supports services for User, Post and School models:
 
 http://localhost:8001/api/v1/ GET to show supported services
 
