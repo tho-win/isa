@@ -7,9 +7,10 @@ router = routers.DefaultRouter()
 router.register(r'user', CustomUserViewSet, basename="customuser")
 router.register(r'post', PostViewSet, basename="post")
 router.register(r'school', SchoolViewSet, basename="school")
+router.register(r'authenticator', AuthenticatorViewSet, basename="authenticator")
 
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

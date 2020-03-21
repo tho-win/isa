@@ -33,16 +33,27 @@
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin-left: 50%">
     <ul class="navbar-nav" style="text-align:right">
-      <li class="nav-item" type="link">
-        <a class="nav-link" href="{% url 'frontend:homepage' %}">Home</a>
-      </li>
+      {% if request.COOKIES.logged_in %}
+        <li class="nav-item" type="link"></li>
+          <p class="navbar-brand">Hello, {{ request.COOKIES.first_name }}!</p>
         </li>
         <li class="nav-item" type="link">
-          <a class="nav-link" href="#">Log in</a>
+          <a class="nav-link" href="{% url 'frontend:homepage' %}">Home</a>
         </li>
         <li class="nav-item" type="link">
-          <a class="nav-link" href="#">Sign up</a>
+          <a class="nav-link" href="{% url 'frontend:logout' %}">Log out</a>
         </li>
+      {% else %}
+        <li class="nav-item" type="link">
+          <a class="nav-link" href="{% url 'frontend:homepage' %}">Home</a>
+        </li>
+        <li class="nav-item" type="link">
+          <a class="nav-link" href="{% url 'frontend:login' %}">Log in</a>
+        </li>
+        <li class="nav-item" type="link">
+          <a class="nav-link" href="{% url 'frontend:signup' %}">Sign up</a>
+        </li>
+      {% endif %}
     </ul>
   </div>
 </nav>

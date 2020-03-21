@@ -4,15 +4,13 @@ from .models import *
 class CustomUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'url', 'username', 'email', 'first_name', 'last_name', 'computing_id', 'phone_number', 'bio')
+        fields = ('id', 'url', 'username', 'password', 'email', 'first_name', 'last_name', 'computing_id', 'phone_number', 'bio')
 
 
-# class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-# 	class Meta:
-# 		#model = users_models.Profile
-# 		model = Profile
-# 		fields = ('id', 'url', 'user', 'joined_date')
-
+class AuthenticatorSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Authenticator
+		fields = ('authenticator', 'user_id', 'date_created')
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
