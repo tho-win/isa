@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %} 
-UVA SwipeMe : User Detail
+UVA SwipeMe : Post Detail
 {% endblock title %} 
 
 
@@ -10,12 +10,12 @@ UVA SwipeMe : User Detail
 
 {% if user %}
     <ul>
-    {% for key, value in user.items %}
+    {% for key, value in post.items %}
         <li>{{ key }}: {{ value }}</li>
     {% endfor %}
     </ul>
 {% else %}
-NO users present.
+NO post found.
 {% endif %}
 
 {% endblock content %}

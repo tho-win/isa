@@ -6,16 +6,27 @@ from django.http import HttpResponse
 from rest_framework import viewsets
 from .serializers import *
 from .models import *
-
+from rest_framework.decorators import action
 
 class CustomUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all().order_by('-date_joined')
-    serializer_class = CustomUserSerializer
+	serializer_class = CustomUserSerializer
 
+	def get_queryset(self):
+		queryset = CustomUser.objects.all()
+		username = self.request.query_params.get('username', None)
+		if username is not None:
+			queryset = queryset.filter(username=username)
+		return queryset
 
-# class ProfileViewSet(viewsets.ModelViewSet):
-# 	queryset = Profile.objects.all().order_by('user')
-# 	serializer_class = ProfileSerializer
+class AuthenticatorViewSet(viewsets.ModelViewSet):
+	serializer_class = AuthenticatorSerializer
+	
+	def get_queryset(self):
+		queryset = Authenticator.objects.all()
+		auth = self.request.query_params.get('authenticator', None)
+		if auth is not None:
+			queryset = queryset.filter(authenticator=auth)
+		return queryset
 
 
 class PostViewSet(viewsets.ModelViewSet):

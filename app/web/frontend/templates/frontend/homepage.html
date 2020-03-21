@@ -10,6 +10,7 @@ UVA SwipeMe : Home
 {% endblock head %}
 
 {% block content %}
+
 <h1 class="home" style="text-align: center; margin-top: 30px">Homepage</h1>
 <i><h5 style="text-align: center; color: blue; margin-top: 30px">Welcome to UVA SwipeMe!</h5></i>
 
@@ -31,6 +32,22 @@ UVA SwipeMe : Home
 	</h5>
 
 	<a href="{% url 'frontend:show_all_users' %}">View all users</a> <br>
+	{% if posts %}
+	<div style="margin: 2% 40% 0% 5%">
+		<h4 style="border-bottom:1px solid #ccc!important">All Posts</h4>
+		<ul>
+    		{% for post in posts %}
+    		<div style="margin-top: 3%">
+    			<b><a href="{% url 'frontend:post_detail' post.id %}">{{ post.title }}</a></b>
+        		<ul>
+					<li>Pick-up Address: {{ post.pickup_address }}</li>
+					<li>Price: ${{ post.price }}</li>
+				</ul>
+    		</div>
+    		{% endfor %}
+    	</ul>
+	</div>
+	{% endif %}
 	<a href="{% url 'frontend:show_all_posts' %}">View all posts</a> <br>
 	<a href="{% url 'frontend:show_special_posts' %}">Discover posts</a> <br>
 
@@ -38,8 +55,5 @@ UVA SwipeMe : Home
 		Note from developer: currently, we <b>only</b> support meal swipe trade within UVA student community. But we are actively working with students from other universities to gather necessary information so that we can expand our app to student communities in other universities.
 	</p>
 </div>
-
-
-
 
 {% endblock content %}
