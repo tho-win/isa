@@ -78,7 +78,6 @@ def create_user(request):
                 return JsonResponse([{'ok': False, "err_code": 2}], safe=False) 
 
         resp_json = response.read().decode('utf-8')
-        ###need to check resp_json is valid
         resp = json.loads(resp_json)
         return JsonResponse([{'ok': True, 'username': request.POST.get('username'), 'password': request.POST.get('password'),
                               'email': request.POST.get('email')}], safe=False)
@@ -93,8 +92,16 @@ def login(request):
         password = request.POST.get('password')
         url = 'http://models:8000/api/v1/user/?username=' + username
         req = urllib.request.Request(url)
+        try:
+            response = urllib.request.urlopen(req)
+        # unknown bad request
+        except urllib.error.URLError as e:
+            resp = [{'ok': False, 'err_code': 4}]
+            return JsonResponse(resp, safe=False)
+
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
+        # cannot find the username
         if (len(resp) == 0):
             resp = [{'ok': False, "err_code": 0}]
             return JsonResponse(resp, safe=False)
@@ -105,6 +112,7 @@ def login(request):
             authenticator = create_authenticator(user_id)
             resp = [{'ok': True, 'authenticator': authenticator, 'first_name': first_name}]
             return JsonResponse(resp, safe=False)
+        # username and password don't match
         else:
             resp = [{'ok': False, "err_code": 1}]
             return JsonResponse(resp, safe=False)

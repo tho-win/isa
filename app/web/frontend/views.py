@@ -96,6 +96,7 @@ def sign_up(request):
             resp_json = urllib.request.urlopen(req).read().decode('utf-8')
             resp = json.loads(resp_json)
 
+            # handle signup error properly
             if not resp[0]["ok"]:
                 s = ""
                 if resp[0]["err_code"] == 2:
@@ -103,7 +104,17 @@ def sign_up(request):
                 elif resp[0]["err_code"] == 3:
                     s = "Username already exists."
                 messages.warning(request, s)
-                form = SignUpForm()
+                # read user's previous inputs to pre-fill the form
+                dummyuser = DummyUser.objects.create(
+                    email = form.cleaned_data.get("email"),
+                    username = form.cleaned_data.get("username"),
+                    first_name = form.cleaned_data.get("first_name"),
+                    last_name = form.cleaned_data.get("last_name"),
+                    computing_id = form.cleaned_data.get("computing_id"),
+                    phone_number = form.cleaned_data.get("phone_number"),
+                    bio = form.cleaned_data.get("bio"))
+                form = SignUpForm(instance=dummyuser)
+                dummyuser.delete()
                 return render(request, 'frontend/signup.html', {'form':form})
         
             username = resp[0]['username']
@@ -156,6 +167,8 @@ def login(request):
         messages.warning(request, "Username does not exist.")
       elif (resp[0]['err_code'] == 1):
         messages.warning(request, "Your password does not match your username. Please try again.")
+      else:
+        messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request.")
       return render(request, 'frontend/login.html', {"form":form})
     
     #return HttpResponse(resp) ###added for debug
