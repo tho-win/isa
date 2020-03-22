@@ -12,5 +12,6 @@ urlpatterns = [
     path('posts/<int:pid>/', views.post_detail, name='post_detail'),
     path('signup', views.sign_up, name="signup"),
     path('login', views.login, name="login"),
-    path('logout', views.logout, name="logout")
+    path('logout', views.logout, name="logout"),
+    path('logout_success', views.logout_success, name="logout_success")
 ]

@@ -40,7 +40,8 @@ services:
       - ./web:/app
     ports:
       - "8000:8000"
-    command: "mod_wsgi-express start-server --working-directory . --reload-on-changes ./web/wsgi.py"
+    command: bash -c "pip install --upgrade pip && pip install django-crispy-forms &&
+                mod_wsgi-express start-server --working-directory . --reload-on-changes ./web/wsgi.py"
 
 networks:
   backend:

@@ -11,6 +11,7 @@ class SignUpForm(forms.Form):
     bio = forms.CharField(max_length=500, widget=forms.Textarea)
     #profile_image = forms.ImageField(default='default.png', upload_to='profile_pics')
 
+    
 class LogInForm(forms.Form):
     username = forms.CharField(label='Username', max_length=20)
     password = forms.CharField(label='Password', widget = forms.PasswordInput())
