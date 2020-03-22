@@ -1,7 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from frontend.forms import SignUpForm, LogInForm, CreatePostForm
 from django.shortcuts import render, render_to_response
-from frontend.forms import SignUpForm, LogInForm
 from django.views.generic import TemplateView
+from .models import DummyUser
 from django.contrib import messages
 from django.urls import reverse
 import urllib.request
@@ -84,6 +85,7 @@ def post_detail(request, pid):
     resp = json.loads(resp_json)
     return render(request, "frontend/post_detail.html", {'post': resp})
 
+
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -93,6 +95,16 @@ def sign_up(request):
             req = urllib.request.Request('http://exp:8000/create_user/', data=data)
             resp_json = urllib.request.urlopen(req).read().decode('utf-8')
             resp = json.loads(resp_json)
+
+            if not resp[0]["ok"]:
+                s = ""
+                if resp[0]["err_code"] == 2:
+                    s = "Email already exists."
+                elif resp[0]["err_code"] == 3:
+                    s = "Username already exists."
+                messages.warning(request, s)
+                form = SignUpForm()
+                return render(request, 'frontend/signup.html', {'form':form})
         
             username = resp[0]['username']
             password = resp[0]['password']
@@ -108,6 +120,7 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'frontend/signup.html', {'form':form})
+
 
 def login(request):
     # If we received a GET request instead of a POST request
@@ -138,7 +151,12 @@ def login(request):
     # Check if the experience layer said they gave us incorrect information
     if not resp or not resp[0]['ok']:
       # Couldn't log them in, send them back to login page with error
-      return render('login.html', ...)
+      form = LogInForm()
+      if (resp[0]['err_code'] == 0):
+        messages.warning(request, "Username does not exist.")
+      elif (resp[0]['err_code'] == 1):
+        messages.warning(request, "Your password does not match your username. Please try again.")
+      return render(request, 'frontend/login.html', {"form":form})
     
     #return HttpResponse(resp) ###added for debug
     
@@ -154,6 +172,7 @@ def login(request):
     response.set_cookie("logged_in", True)
     
     return response
+
 
 def login_exp_api(username, password):
     data = {'username':username, 'password':password}
@@ -172,6 +191,7 @@ def check_auth(authenticator):
     resp = json.loads(resp_json)
     return resp[0]['ok']
 
+
 def logout(request):
     response = HttpResponseRedirect(reverse ('frontend:logout_success'))
     response.delete_cookie("auth")
@@ -179,6 +199,45 @@ def logout(request):
     response.delete_cookie("logged_in")
     return response
 
+
 def logout_success(request):
     return render(request, 'frontend/logout_success.html')
+
+
+# def create_listing(request):
+#     # Try to get the authenticator cookie
+#     auth = request.COOKIES.get('auth')
+
+#     # If the authenticator cookie wasn't set...
+#     if not auth:
+#       # Handle user not logged in while trying to create a listing
+#       return HttpResponseRedirect(reverse("frontend:login") + "?next=" + reverse("frontend:create_listing"))
+
+#     # If we received a GET request instead of a POST request...
+#     if request.method == 'GET':
+#         # Return to form page
+#         form = CreatePostForm()
+#         return render(request, "frontend/create_listing.html", {"form" : form})
+
+#     # Otherwise, create a new form instance with our POST data
+#     form = CreatePostForm(request.POST)
+
+#     # Send validated information to our experience layer
+#     resp = create_listing_exp_api(auth, ...)
+
+
+# def create_listing_exp_api
+
+
+
+
+
+
+
+
+
+
+
+
+
 

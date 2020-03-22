@@ -41,6 +41,7 @@ services:
     ports:
       - "8000:8000"
     command: bash -c "pip install --upgrade pip && pip install django-crispy-forms &&
+                python manage.py makemigrations && python manage.py migrate &&
                 mod_wsgi-express start-server --working-directory . --reload-on-changes ./web/wsgi.py"
 
 networks:

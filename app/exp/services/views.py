@@ -16,7 +16,6 @@ def show_all_users(request):
     print(resp)
     return JsonResponse(resp, safe=False)
 
-
 def show_all_posts(request):
     req = urllib.request.Request('http://models:8000/api/v1/post/')
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
@@ -41,6 +40,15 @@ def post_detail(request, pid):
     print(resp)
     return JsonResponse(resp, safe=False)
 
+'''
+err_code: 
+    0 : username does not exist
+    1 : username exists but the password does not match
+    2 : email already exists
+    3 : username already exists
+    4 : unknown failure
+'''
+
 @csrf_exempt
 def create_user(request):
     if request.method == 'POST':
@@ -57,12 +65,26 @@ def create_user(request):
         
         data = urllib.parse.urlencode(data).encode()
         req = urllib.request.Request('http://models:8000/api/v1/user/', data=data)
-        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+        try: 
+            response = urllib.request.urlopen(req)
+        except urllib.error.URLError as e:
+            get_url = 'http://models:8000/api/v1/user/?username=' + request.POST.get('username')
+            get_req = urllib.request.Request(get_url)
+            get_resp_json = urllib.request.urlopen(get_req).read().decode('utf-8')
+            get_resp = json.loads(get_resp_json)
+            if (len(get_resp) > 0):
+                return JsonResponse([{'ok': False, "err_code": 3}], safe=False)
+            else:
+                return JsonResponse([{'ok': False, "err_code": 2}], safe=False) 
+
+        resp_json = response.read().decode('utf-8')
         ###need to check resp_json is valid
         resp = json.loads(resp_json)
-        return JsonResponse([{'username': request.POST.get('username'), 'password': request.POST.get('password')}], safe=False)
+        return JsonResponse([{'ok': True, 'username': request.POST.get('username'), 'password': request.POST.get('password'),
+                              'email': request.POST.get('email')}], safe=False)
         
     else: return JsonResponse([{'return': 'for not post'}], safe=False)
+
 
 @csrf_exempt
 def login(request):
@@ -73,6 +95,9 @@ def login(request):
         req = urllib.request.Request(url)
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
+        if (len(resp) == 0):
+            resp = [{'ok': False, "err_code": 0}]
+            return JsonResponse(resp, safe=False)
         encodedPassword = resp[0]['password']
         first_name = resp[0]['first_name']
         if check_password(password, encodedPassword):
@@ -80,8 +105,12 @@ def login(request):
             authenticator = create_authenticator(user_id)
             resp = [{'ok': True, 'authenticator': authenticator, 'first_name': first_name}]
             return JsonResponse(resp, safe=False)
+        else:
+            resp = [{'ok': False, "err_code": 1}]
+            return JsonResponse(resp, safe=False)
         
     else: return JsonResponse([{'result': 'no post'}], safe=False)
+
 
 def create_authenticator(user_id):
     authenticator = hmac.new(
@@ -96,6 +125,7 @@ def create_authenticator(user_id):
     resp = json.loads(resp_json)
     return resp['authenticator']
 
+
 @csrf_exempt
 def check_auth(request):
     if request.method == 'POST':
@@ -108,3 +138,6 @@ def check_auth(request):
             return JsonResponse([{'ok': 0}], safe=False)
         return JsonResponse([{'ok': 1}], safe=False)
     else: return JsonResponse([{'GET request': 'invalid'}], safe=False)
+
+
+
