@@ -21,17 +21,15 @@ def show_all_posts(request):
     req = urllib.request.Request('http://models:8000/api/v1/post/')
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
+    for p in resp:
+        seller = get_user_by_url(p['seller'])
+        p['seller'] = seller
     return JsonResponse(resp, safe=False)
 
 
 def user_detail(request, uid):
     url = 'http://models:8000/api/v1/user/' + str(uid) + "/"
     req = urllib.request.Request(url)
-    '''
-    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-    resp = json.loads(resp_json)
-    return JsonResponse(resp, safe=False)
-    '''
     try:
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     except HTTPError as e:
@@ -39,6 +37,15 @@ def user_detail(request, uid):
     resp = json.loads(resp_json)
     resp['ok'] = True
     return JsonResponse(resp, safe=False)
+
+def get_user_by_url(url):
+    req = urllib.request.Request(url)
+    try:
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    except HTTPError as e:
+        return None
+    resp = json.loads(resp_json)
+    return resp
 
 def post_detail(request, pid):
     url = 'http://models:8000/api/v1/post/' + str(pid) + "/"
@@ -48,6 +55,8 @@ def post_detail(request, pid):
     except HTTPError as e:
         return JsonResponse({'ok': False}, safe=False)
     resp = json.loads(resp_json)
+    seller_url = resp['seller']
+    resp['seller'] = get_user_by_url(seller_url)
     resp['ok'] = True
     return JsonResponse(resp, safe=False)
 

@@ -14,7 +14,11 @@ UVA SwipeMe : Post Detail
     {% if user %}
         <ul>
         {% for key, value in post.items %}
+        {% if key == 'seller' %}
+            <li>{{ key }}: <a href="{% url 'frontend:user_detail' value.id %}">{{ value.first_name }} {{ value.last_name }}</a> </li>
+        {% else %}
             <li>{{ key }}: {{ value }}</li>
+        {% endif %}
         {% endfor %}
         </ul>
     {% endif %}

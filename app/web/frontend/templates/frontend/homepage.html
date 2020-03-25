@@ -32,7 +32,7 @@ UVA SwipeMe : Home
 	<div class="row" style="margin: 5px; align-items: center;">
 		<div class="latest_post" style="margin-left: 5%">
 			<h4>Latest Post</h4>
-			<b>{{ latest_post.title }}</b> <small>posted by</small> <b>{{ latest_post.seller }}</b> <br>
+			<b><a href="{% url 'frontend:post_detail' latest_post.id %}">{{ latest_post.title }}</a></b> <small>posted by</small> <b>{{ latest_post.seller.first_name }}</b> <br>
 			<em>{{ latest_post.content }}</em> <br>
 			<ul>
 				<li>Pick-up Address: {{ latest_post.pickup_address }}</li>
@@ -43,7 +43,7 @@ UVA SwipeMe : Home
 
 		<div class="cheapest_post" style="margin-left: 10%">
 			<h4>Post with Lowest Price</h4>
-			<b>{{ cheapest_post.title }}</b> <small>posted by</small> <b>{{ cheapest_post.seller }}</b> <br>
+			<b><a href="{% url 'frontend:post_detail' cheapest_post.id %}">{{ cheapest_post.title }}</a></b> <small>posted by</small> <b>{{ cheapest_post.seller.first_name }}</b> <br>
 			<em>{{ cheapest_post.content }}</em><br>
 			<ul>
 				<li>Pick-up Address: {{ cheapest_post.pickup_address }}</li>
@@ -54,7 +54,7 @@ UVA SwipeMe : Home
 
 		<div class="most_swipe_post" style="margin-left: 10%">
 			<h4>Post with Most Remaining Swipes</h4>
-			<b>{{ most_swipe_post.title }}</b> <small>posted by</small> <b>{{ most_swipe_post.seller }}</b> <br>
+			<b><a href="{% url 'frontend:post_detail' most_swipe_post.id %}">{{ most_swipe_post.title }}</a></b> <small>posted by</small> <b>{{ most_swipe_post.seller.first_name }}</b> <br>
 			<em>{{ most_swipe_post.content }}</em><br>
 			<ul>
 				<li>Pick-up Address: {{ most_swipe_post.pickup_address }}</li>
