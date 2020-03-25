@@ -15,7 +15,7 @@ class AuthenticatorSerializer(serializers.HyperlinkedModelSerializer):
 class PostSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Post
-		fields = ('id', 'url', 'seller', 'title', 'content', 'pub_date', 'price', 'remaining_nums', 'pickup_address')
+		fields = ('id', 'url', 'seller', 'seller_id', 'title', 'content', 'pub_date', 'price', 'remaining_nums', 'pickup_address')
 
 
 class SchoolSerializer(serializers.HyperlinkedModelSerializer):

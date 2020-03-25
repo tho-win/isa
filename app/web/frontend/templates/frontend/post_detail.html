@@ -8,14 +8,18 @@ UVA SwipeMe : Post Detail
 
 {% block content %}
 
-{% if user %}
-    <ul>
+{% if err %}
+    <h2 style="text-align: center">Invalid post ID</h2>
+{% else %}
+	<ul>
+    <li>seller: <a href="{% url 'frontend:user_detail' seller_id %}">{{ seller }}</a></li>
     {% for key, value in post.items %}
         <li>{{ key }}: {{ value }}</li>
     {% endfor %}
     </ul>
-{% else %}
-NO post found.
+    {% if flag %}
+    <p>HIIIIIII</p>
+    {% endif %}
 {% endif %}
 
 {% endblock content %}

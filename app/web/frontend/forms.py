@@ -35,7 +35,7 @@ class LogInForm(forms.Form):
     password = forms.CharField(label='Password', widget = forms.PasswordInput())
 
 
-class CreatePostForm(forms.ModelForm):
+class CreatePostForm(forms.Form):
     title = forms.CharField(max_length=100, label="Title of your post")
     content = forms.CharField(max_length=3000, label="Describe your post briefly", widget=forms.Textarea(attrs={'cols': 10, 'rows': 4}))
     price = forms.FloatField(min_value=0, label="How much do you want to sell for a single swipe?")

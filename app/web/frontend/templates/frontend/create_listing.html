@@ -1,0 +1,23 @@
+{% extends "frontend/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} 
+UVA SwipeMe : Create Post
+{% endblock title %} 
+
+{% block content %}
+
+<div class="content-section" style="margin: 25px 25% 25px 25%; width: 50%;">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create a Post&nbsp;</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="text-muted mb-3">* = required field</div>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Post</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
