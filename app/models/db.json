@@ -1,37 +1,64 @@
 [
 {
-    "model": "api.school",
-    "pk": 1,
+    "model": "api.authenticator",
+    "pk": 13,
     "fields": {
-        "name": "UVA",
-        "city": "Charlottesville",
-        "state": "Virginia"
+        "authenticator": "37ae741e26e89d09edc378a61073f1dd028abefefe0629a158a815344e134f2e",
+        "user_id": 4,
+        "date_created": "2020-03-22T01:14:11.391Z"
+    }
+},
+{
+    "model": "api.authenticator",
+    "pk": 14,
+    "fields": {
+        "authenticator": "0349b9e931e572dba076329dcb26cf052f944b8f32e4d9ef82c0de314de44f3d",
+        "user_id": 6,
+        "date_created": "2020-03-22T01:16:37.155Z"
+    }
+},
+{
+    "model": "api.authenticator",
+    "pk": 15,
+    "fields": {
+        "authenticator": "9fd282808fd9db1b0a0068e57675cbb79f0e4164a4a0fc817e7b9072411f0569",
+        "user_id": 7,
+        "date_created": "2020-03-22T01:17:16.965Z"
+    }
+},
+{
+    "model": "api.authenticator",
+    "pk": 16,
+    "fields": {
+        "authenticator": "ba17087d1cd2fa5e242721d6e8ac3653674eaa2dd20aa3cef251221cb49a542e",
+        "user_id": 8,
+        "date_created": "2020-03-22T01:17:46.649Z"
     }
 },
 {
     "model": "sessions.session",
-    "pk": "v8morikjbrq7v4ybsircod1o5panmth6",
+    "pk": "kuyhgsvqa2avtwnr8pavs2vpmeo3s5px",
     "fields": {
-        "session_data": "NjcxZjYwZTkzYTdjN2Q5OWZhOTIyOGY1ZDcxMjRiZTcxNjgwNjhjZTp7Il9hdXRoX3VzZXJfaWQiOiI0IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJiYzYwY2RjODQ4OTZmNTYwMDQ2ZWExZmE4NzdiMjE5MGJiYmViMzkzIn0=",
-        "expire_date": "2020-03-14T21:57:32.303Z"
+        "session_data": "MTAyNWQwZjk5OGUwOTdlYTk0YmZjNTUxNzdjMzA1NDYyNDU3OTdhYTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiN2ExNTkzMzBiODEzOTJiZjg4OTIxYzQ1YjhkZDVmMzc5ZmYxY2U4YyIsIl9hdXRoX3VzZXJfaWQiOiI0In0=",
+        "expire_date": "2020-04-05T01:12:58.610Z"
     }
 },
 {
     "model": "api.customuser",
     "fields": {
-        "last_login": null,
-        "is_superuser": false,
-        "username": "testUser",
-        "email": "test@virginia.edu",
-        "is_staff": false,
+        "last_login": "2020-03-22T01:12:58.606Z",
+        "is_superuser": true,
+        "username": "admin",
+        "is_staff": true,
         "is_active": true,
-        "password": "password",
-        "first_name": "Test",
-        "last_name": "User",
+        "email": "admin@gmail.com",
+        "password": "pbkdf2_sha256$150000$Z6ndkIHBg0P2$vFF5rbcuoeM2QiYkI/t/CD9gMReYFJ69q1h4cU97h6o=",
+        "first_name": "",
+        "last_name": "",
         "computing_id": "",
-        "phone_number": "1234567890",
-        "bio": "Hi, I am created by fixture.",
-        "date_joined": "2020-03-01T02:51:37.284Z",
+        "phone_number": "",
+        "bio": "",
+        "date_joined": "2020-03-22T01:12:47.554Z",
         "profile_image": "default.png",
         "groups": [],
         "user_permissions": []
@@ -43,16 +70,16 @@
         "last_login": null,
         "is_superuser": false,
         "username": "tj1819",
-        "email": "tj5ca@virginia.edu",
         "is_staff": false,
         "is_active": true,
-        "password": "password",
+        "email": "tj5ca@virginia.edu",
+        "password": "pbkdf2_sha256$150000$PBeN2uYTBbVc$MyBOztMD2u08/t3wH/DYtsirc65hW/lljn/QZC0QCXU=",
         "first_name": "Thomas",
         "last_name": "Jefferson",
         "computing_id": "tj5ca",
-        "phone_number": "5555555555",
-        "bio": "I am TJ!!!@",
-        "date_joined": "2020-02-29T21:43:39Z",
+        "phone_number": "1234567890",
+        "bio": "I AM TJ!!!",
+        "date_joined": "2020-03-22T01:16:36.982Z",
         "profile_image": "default.png",
         "groups": [],
         "user_permissions": []
@@ -61,229 +88,133 @@
 {
     "model": "api.customuser",
     "fields": {
-        "last_login": "2020-02-29T21:57:32Z",
-        "is_superuser": true,
+        "last_login": null,
+        "is_superuser": false,
         "username": "haoranzhu",
-        "email": "hz3fr@virginia.edu",
-        "is_staff": true,
+        "is_staff": false,
         "is_active": true,
-        "password": "pbkdf2_sha256$150000$KZWUEflYSZ3q$dMrx0ok4y+mTdKMg9kirGGu1oRoGBi73e6Uphp/5ZNM=",
+        "email": "hz3fr@virginia.edu",
+        "password": "pbkdf2_sha256$150000$ZiqRJ5gtspii$V3pwS4Ij//w6CX1KF9tnda4Js1QEKpnZGQvbkH8zWZw=",
         "first_name": "Haoran",
         "last_name": "Zhu",
         "computing_id": "hz3fr",
         "phone_number": "4344662282",
-        "bio": "Hi, I am Haoran, a third-year CS&Math student at UVa. I am taking ISA this semester. I love soccer!",
-        "date_joined": "2020-02-29T21:50:04Z",
+        "bio": "I am Haoran :)",
+        "date_joined": "2020-03-22T01:17:16.786Z",
         "profile_image": "default.png",
         "groups": [],
         "user_permissions": []
     }
 },
 {
-    "model": "api.post",
+    "model": "api.customuser",
+    "fields": {
+        "last_login": null,
+        "is_superuser": false,
+        "username": "testuser",
+        "is_staff": false,
+        "is_active": true,
+        "email": "testuser@virginia.edu",
+        "password": "pbkdf2_sha256$150000$nFAlnDs3eTU3$Em1QvXghlMXvufoyFvG5xaqm1OEMxF1CDef5F74MovY=",
+        "first_name": "Test",
+        "last_name": "User",
+        "computing_id": "testuser",
+        "phone_number": "0987654321",
+        "bio": "I am a testUser.",
+        "date_joined": "2020-03-22T01:17:46.375Z",
+        "profile_image": "default.png",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2020-03-22T01:13:09.466Z",
+        "user": [
+            "admin"
+        ],
+        "content_type": [
+            "api",
+            "customuser"
+        ],
+        "object_id": "3",
+        "object_repr": "testuser",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
     "pk": 2,
     "fields": {
-        "seller": [
-            "testUser"
+        "action_time": "2020-03-22T01:13:09.469Z",
+        "user": [
+            "admin"
         ],
-        "title": "test post 2",
-        "content": "I got some swipes to sell.",
-        "pub_date": "2020-02-29T21:40:39.349Z",
-        "price": 6.5,
-        "remaining_nums": 4,
-        "pickup_address": "first floor at O'Hill"
-    }
-},
-{
-    "model": "api.post",
-    "pk": 3,
-    "fields": {
-        "seller": [
-            "haoranzhu"
+        "content_type": [
+            "api",
+            "customuser"
         ],
-        "title": "test post 3",
-        "content": "I got a lot of swipes to sell at low prices!",
-        "pub_date": "2020-02-29T21:58:14.270Z",
-        "price": 4.0,
-        "remaining_nums": 20,
-        "pickup_address": "Runk Hall"
-    }
-},
-{
-    "model": "api.post",
-    "pk": 4,
-    "fields": {
-        "seller": [
-            "tj1819"
-        ],
-        "title": "test post 1",
-        "content": "I want to sell a swipe.",
-        "pub_date": "2020-02-29T21:58:57.277Z",
-        "price": 7.0,
-        "remaining_nums": 1,
-        "pickup_address": "Starbucks at Newcomb Hall"
+        "object_id": "2",
+        "object_repr": "tj1819",
+        "action_flag": 3,
+        "change_message": ""
     }
 },
 {
     "model": "admin.logentry",
     "pk": 3,
     "fields": {
-        "action_time": "2020-02-29T21:51:59.217Z",
+        "action_time": "2020-03-22T01:13:09.474Z",
         "user": [
-            "haoranzhu"
+            "admin"
         ],
         "content_type": [
             "api",
             "customuser"
         ],
-        "object_id": "3",
-        "object_repr": "tj1819",
-        "action_flag": 2,
-        "change_message": "[{\"changed\": {\"fields\": [\"bio\"]}}]"
+        "object_id": "1",
+        "object_repr": "haoranzhu",
+        "action_flag": 3,
+        "change_message": ""
     }
 },
 {
     "model": "admin.logentry",
     "pk": 4,
     "fields": {
-        "action_time": "2020-02-29T21:52:06.864Z",
+        "action_time": "2020-03-22T01:13:47.858Z",
         "user": [
-            "haoranzhu"
+            "admin"
         ],
         "content_type": [
             "api",
             "customuser"
         ],
-        "object_id": "3",
+        "object_id": "5",
         "object_repr": "tj1819",
-        "action_flag": 2,
-        "change_message": "[]"
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
     }
 },
 {
     "model": "admin.logentry",
     "pk": 5,
     "fields": {
-        "action_time": "2020-02-29T21:52:12.285Z",
+        "action_time": "2020-03-22T01:15:32.918Z",
         "user": [
-            "haoranzhu"
+            "admin"
         ],
         "content_type": [
             "api",
             "customuser"
         ],
-        "object_id": "3",
+        "object_id": "5",
         "object_repr": "tj1819",
-        "action_flag": 2,
-        "change_message": "[]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 6,
-    "fields": {
-        "action_time": "2020-02-29T21:52:32.854Z",
-        "user": [
-            "haoranzhu"
-        ],
-        "content_type": [
-            "api",
-            "customuser"
-        ],
-        "object_id": "3",
-        "object_repr": "tj1819",
-        "action_flag": 2,
-        "change_message": "[]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 7,
-    "fields": {
-        "action_time": "2020-02-29T21:53:13.815Z",
-        "user": [
-            "haoranzhu"
-        ],
-        "content_type": [
-            "api",
-            "customuser"
-        ],
-        "object_id": "3",
-        "object_repr": "tj1819",
-        "action_flag": 2,
-        "change_message": "[{\"changed\": {\"fields\": [\"first_name\"]}}]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 8,
-    "fields": {
-        "action_time": "2020-02-29T21:53:21.396Z",
-        "user": [
-            "haoranzhu"
-        ],
-        "content_type": [
-            "api",
-            "customuser"
-        ],
-        "object_id": "3",
-        "object_repr": "tj1819",
-        "action_flag": 2,
-        "change_message": "[{\"changed\": {\"fields\": [\"first_name\"]}}]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 9,
-    "fields": {
-        "action_time": "2020-02-29T21:56:13.080Z",
-        "user": [
-            "haoranzhu"
-        ],
-        "content_type": [
-            "api",
-            "customuser"
-        ],
-        "object_id": "4",
-        "object_repr": "haoranzhu",
-        "action_flag": 2,
-        "change_message": "[{\"changed\": {\"fields\": [\"last_login\", \"first_name\", \"last_name\", \"computing_id\", \"phone_number\"]}}]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 10,
-    "fields": {
-        "action_time": "2020-02-29T21:56:34.782Z",
-        "user": [
-            "haoranzhu"
-        ],
-        "content_type": [
-            "api",
-            "customuser"
-        ],
-        "object_id": "4",
-        "object_repr": "haoranzhu",
-        "action_flag": 2,
-        "change_message": "[{\"changed\": {\"fields\": [\"bio\"]}}]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 11,
-    "fields": {
-        "action_time": "2020-03-01T01:56:28.485Z",
-        "user": [
-            "haoranzhu"
-        ],
-        "content_type": [
-            "api",
-            "customuser"
-        ],
-        "object_id": "4",
-        "object_repr": "haoranzhu",
-        "action_flag": 2,
-        "change_message": "[{\"changed\": {\"fields\": [\"bio\"]}}]"
+        "action_flag": 3,
+        "change_message": ""
     }
 }
 ]

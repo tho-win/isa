@@ -3,8 +3,8 @@ from django.utils import timezone
 from django.db import models
 import datetime
 
-
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True, default="")
     password = models.CharField(max_length=100, default="password")
     first_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=True)
@@ -21,19 +21,6 @@ class CustomUser(AbstractUser):
         post = Post.objects.create(title=title, seller=self, content=content, price=price, remaining_nums=swipes)
         post.save()
         return post
-
-
-# class Profile(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-#     image = models.ImageField(default='default.png', upload_to='profile_pics')
-#     joined_date = models.DateField(default=datetime.date.today)
-
-#     def __repr__(self):
-#         return str(self)
-
-#     def __str__(self):
-#         return self.user.username + ' Profile'
-
 
 class Post(models.Model):
     seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -70,3 +57,8 @@ class School(models.Model):
 
     def __str__(self):
     	return self.name
+
+class Authenticator(models.Model):
+    authenticator = models.CharField(max_length=256)
+    user_id = models.IntegerField()
+    date_created = models.DateTimeField(default=timezone.now)
