@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from urllib.error import URLError, HTTPError
 from frontend.forms import SignUpForm, LogInForm, CreatePostForm
 from django.shortcuts import render, render_to_response
 from django.views.generic import TemplateView
@@ -112,11 +113,11 @@ def sign_up(request):
             resp = json.loads(resp_json)
 
             # handle signup error properly
-            if not resp[0]["ok"]:
+            if not resp["ok"]:
                 s = ""
-                if resp[0]["err_code"] == 2:
+                if resp["err_code"] == 2:
                     s = "Email already exists."
-                elif resp[0]["err_code"] == 3:
+                elif resp["err_code"] == 3:
                     s = "Username already exists."
                 messages.warning(request, s)
                 # read user's previous inputs to pre-fill the form
@@ -132,10 +133,10 @@ def sign_up(request):
                 dummyuser.delete()
                 return render(request, 'frontend/signup.html', {'form':form})
         
-            username = resp[0]['username']
-            password = resp[0]['password']
+            username = resp['username']
+            password = resp['password']
             auth = login_exp_api(username, password) 
-            authenticator = auth[0]['authenticator']
+            authenticator = auth['authenticator']
 
             s = "Account created for " + form.cleaned_data.get("username") + "!"
             messages.success(request, s)
@@ -175,12 +176,12 @@ def login(request):
     resp = login_exp_api(username, password)    
 
     # Check if the experience layer said they gave us incorrect information
-    if not resp or not resp[0]['ok']:
+    if not resp or not resp['ok']:
       # Couldn't log them in, send them back to login page with error
       form = LogInForm()
-      if (resp[0]['err_code'] == 0):
+      if (resp['err_code'] == 0):
         messages.warning(request, "Username does not exist.")
-      elif (resp[0]['err_code'] == 1):
+      elif (resp['err_code'] == 1):
         messages.warning(request, "Your password does not match your username. Please try again.")
       else:
         messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request.")
@@ -190,8 +191,8 @@ def login(request):
     
     """ If we made it here, we can log them in. """
     # Set their login cookie and redirect to back to wherever they came from
-    authenticator = resp[0]['authenticator']
-    first_name = resp[0]['first_name']
+    authenticator = resp['authenticator']
+    first_name = resp['first_name']
 
     mynext = request.GET.get('next') 
     response = HttpResponseRedirect(reverse('frontend:homepage'))
@@ -220,10 +221,16 @@ def check_auth(authenticator):
     req = urllib.request.Request('http://exp:8000/check_auth/', data=data)
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
-    return resp[0]['ok']
+    return resp['ok']
 
 
 def logout(request):
+    url = 'http://exp:8000/delete/auth/' + request.COOKIES.get('auth')
+    req = urllib.request.Request(url)
+    try:
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    except HTTPError as e:
+        print('e')
     response = HttpResponseRedirect(reverse ('frontend:logout_success'))
     response.delete_cookie("auth")
     response.delete_cookie("first_name")
