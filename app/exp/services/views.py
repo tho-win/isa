@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from urllib.error import URLError, HTTPError
 import urllib.request
 import urllib.parse
 import json
@@ -20,24 +21,34 @@ def show_all_posts(request):
     req = urllib.request.Request('http://models:8000/api/v1/post/')
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
-    print(resp)
     return JsonResponse(resp, safe=False)
 
 
 def user_detail(request, uid):
     url = 'http://models:8000/api/v1/user/' + str(uid) + "/"
     req = urllib.request.Request(url)
+    '''
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
-    print(resp)
+    return JsonResponse(resp, safe=False)
+    '''
+    try:
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    except HTTPError as e:
+        return JsonResponse({'ok': False}, safe=False)
+    resp = json.loads(resp_json)
+    resp['ok'] = True
     return JsonResponse(resp, safe=False)
 
 def post_detail(request, pid):
     url = 'http://models:8000/api/v1/post/' + str(pid) + "/"
     req = urllib.request.Request(url)
-    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    try:
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    except HTTPError as e:
+        return JsonResponse({'ok': False}, safe=False)
     resp = json.loads(resp_json)
-    print(resp)
+    resp['ok'] = True
     return JsonResponse(resp, safe=False)
 
 '''
@@ -73,16 +84,16 @@ def create_user(request):
             get_resp_json = urllib.request.urlopen(get_req).read().decode('utf-8')
             get_resp = json.loads(get_resp_json)
             if (len(get_resp) > 0):
-                return JsonResponse([{'ok': False, "err_code": 3}], safe=False)
+                return JsonResponse({'ok': False, "err_code": 3}, safe=False)
             else:
-                return JsonResponse([{'ok': False, "err_code": 2}], safe=False) 
+                return JsonResponse({'ok': False, "err_code": 2}, safe=False) 
 
         resp_json = response.read().decode('utf-8')
         resp = json.loads(resp_json)
-        return JsonResponse([{'ok': True, 'username': request.POST.get('username'), 'password': request.POST.get('password'),
-                              'email': request.POST.get('email')}], safe=False)
+        return JsonResponse({'ok': True, 'username': request.POST.get('username'), 'password': request.POST.get('password'),
+                              'email': request.POST.get('email')}, safe=False)
         
-    else: return JsonResponse([{'return': 'for not post'}], safe=False)
+    else: return JsonResponse({'return': 'for not post'}, safe=False)
 
 
 @csrf_exempt
@@ -96,28 +107,28 @@ def login(request):
             response = urllib.request.urlopen(req)
         # unknown bad request
         except urllib.error.URLError as e:
-            resp = [{'ok': False, 'err_code': 4}]
+            resp = {'ok': False, 'err_code': 4}
             return JsonResponse(resp, safe=False)
 
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
         # cannot find the username
         if (len(resp) == 0):
-            resp = [{'ok': False, "err_code": 0}]
+            resp = {'ok': False, "err_code": 0}
             return JsonResponse(resp, safe=False)
         encodedPassword = resp[0]['password']
         first_name = resp[0]['first_name']
         if check_password(password, encodedPassword):
             user_id = resp[0]['id']
             authenticator = create_authenticator(user_id)
-            resp = [{'ok': True, 'authenticator': authenticator, 'first_name': first_name}]
+            resp = {'ok': True, 'authenticator': authenticator, 'first_name': first_name}
             return JsonResponse(resp, safe=False)
         # username and password don't match
         else:
-            resp = [{'ok': False, "err_code": 1}]
+            resp = {'ok': False, "err_code": 1}
             return JsonResponse(resp, safe=False)
         
-    else: return JsonResponse([{'result': 'no post'}], safe=False)
+    else: return JsonResponse({'result': 'no post'}, safe=False)
 
 
 def create_authenticator(user_id):
@@ -143,9 +154,24 @@ def check_auth(request):
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')
         resp = json.loads(resp_json)
         if len(resp) == 0:
-            return JsonResponse([{'ok': 0}], safe=False)
-        return JsonResponse([{'ok': 1}], safe=False)
-    else: return JsonResponse([{'GET request': 'invalid'}], safe=False)
+            return JsonResponse({'ok': 0}, safe=False)
+        return JsonResponse({'ok': 1}, safe=False)
+    else: return JsonResponse({'GET request': 'invalid'}, safe=False)
 
-
-
+@csrf_exempt
+def delete_auth(request, auth):
+    #find that auth in db
+    url = 'http://models:8000/api/v1/authenticator/?authenticator=' + auth
+    req = urllib.request.Request(url)
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    if len(resp) > 0:
+        auth_id = resp[0]['id']
+    url = 'http://models:8000/api/v1/authenticator/' + str(auth_id) + '/'
+    req = urllib.request.Request(url, method='DELETE')
+    try:
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+        return JsonResponse({'deleted?': True}, safe=False)
+    except URLError as e:
+        return JsonResponse({'error': 'Cannot delete auth'}, safe=False)
+        

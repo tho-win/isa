@@ -10,7 +10,7 @@ class CustomUserSerializer(serializers.HyperlinkedModelSerializer):
 class AuthenticatorSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Authenticator
-		fields = ('authenticator', 'user_id', 'date_created')
+		fields = ('id', 'authenticator', 'user_id', 'date_created', 'url')
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:

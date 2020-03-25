@@ -8,14 +8,16 @@ UVA SwipeMe : User Detail
 
 {% block content %}
 
-{% if user %}
-    <ul>
-    {% for key, value in user.items %}
-        <li>{{ key }}: {{ value }}</li>
-    {% endfor %}
-    </ul>
+{% if err_msg %}
+    <h2>{{ err_msg }}</h2>
 {% else %}
-NO users present.
+    {% if user %}
+        <ul>
+        {% for key, value in user.items %}
+            <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 {% endif %}
 
 {% endblock content %}

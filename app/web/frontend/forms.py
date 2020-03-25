@@ -22,6 +22,9 @@ class SignUpForm(forms.ModelForm):
         model = DummyUser
         fields = ["first_name", "last_name", "username", "email", "password", "computing_id", "phone_number", "bio"]
         widgets = {
+            'email': forms.EmailInput(),
+            'password': forms.PasswordInput(),
+            'phone_number': forms.NumberInput(),
             'bio': forms.Textarea(attrs={'cols': 10, 'rows': 4}),
         }
 
