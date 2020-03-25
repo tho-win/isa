@@ -4,7 +4,7 @@ from django.db import models
 import datetime
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(max_length=200)
+    email = models.EmailField(unique=True, default="")
     password = models.CharField(max_length=100, default="password")
     first_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=True)

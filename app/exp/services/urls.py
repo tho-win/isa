@@ -9,5 +9,6 @@ urlpatterns = [
     path('posts/<int:pid>/', views.post_detail, name='post_detail'),
     path('create_user/', views.create_user, name='create_user'),
     path('login/', views.login, name='login'),
-    path('check_auth/', views.check_auth, name='check_auth')
+    path('check_auth/', views.check_auth, name='check_auth'),
+    path('delete/auth/<str:auth>', views.delete_auth, name='delete_auth'),
 ]

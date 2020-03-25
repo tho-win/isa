@@ -34,11 +34,14 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin-left: 50%">
     <ul class="navbar-nav" style="text-align:right">
       {% if request.COOKIES.logged_in %}
-        <li class="nav-item" type="link"></li>
+        <!-- <li class="nav-item" type="link"></li>
           <p class="navbar-brand">Hello, {{ request.COOKIES.first_name }}!</p>
-        </li>
+        </li> -->
         <li class="nav-item" type="link">
           <a class="nav-link" href="{% url 'frontend:homepage' %}">Home</a>
+        </li>
+        <li class="nav-item" type="link">
+          <a class="nav-link" href="#">Profile</a>
         </li>
         <li class="nav-item" type="link">
           <a class="nav-link" href="{% url 'frontend:logout' %}">Log out</a>
@@ -58,7 +61,16 @@
   </div>
 </nav>
 
-{% block content %}{% endblock %}
+<div class="content" style="min-height: 90vh">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% block content %}{% endblock %}
+</div>
 
 
 <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
