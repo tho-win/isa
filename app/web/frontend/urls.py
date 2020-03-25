@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 app_name = 'frontend'
 urlpatterns = [
     path('', views.homepage, name='homepage'),
+    path('about/', views.about, name='about'),
     path('posts/', views.show_all_posts, name="show_all_posts"),
   	path('specialposts', views.show_special_posts, name="show_special_posts"),
     path('users/', views.show_all_users, name='show_all_users'),
