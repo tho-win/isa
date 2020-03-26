@@ -8,11 +8,17 @@ Frontend:
 
 http://localhost:8000/ is the homepage.
 
+http://localhost:8000/about shows basic information about our marketplace.
+
 http://localhost:8000/users/ shows some basic info about all users available in the dataset for demo purposes.
 
 http://localhost:8000/posts/ shows some basic info about all posts available in the dataset for demo purposes.
 
 http://localhost:8000/specialposts shows the latest post, post with most remaining swipes and lowest prices.
+
+http://localhost:8000/signup is the sign up page for user to create new account.
+
+http://localhost:8000/login is the page signed up users use to log in.
 
 Services:
 
@@ -24,4 +30,8 @@ http://localhost:8001/api/v1/user/ GET to show all User intances, POST to add cr
 
 http://localhost:8001/api/v1/user/1/ GET to show user with id=1, PUT to edit or DELETE to delete user instance
 
-Similarly, replace "user" keyword with "school" to play with School models :)
+Similarly, replace "user" keyword with "post" or "school" to play with School models :)
+
+Update as of Project 4 (3/25/2020):
+
+The website allows user to create new account (sign up), login, logout, creating new listing and display Profile page.
