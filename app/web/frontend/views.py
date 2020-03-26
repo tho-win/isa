@@ -22,7 +22,9 @@ def homepage(request):
         if check_auth(auth):
             return render(request, 'frontend/homepage.html', {'posts': all_posts_resp, 'special_posts': special_posts})
 
-    return render(request, 'frontend/homepage.html', {'posts': all_posts_resp, 'special_posts_flag': special_posts['flag'],'latest_post' : special_posts['latest_post'], "cheapest_post" : special_posts['cheapest_post'], "most_swipe_post" : special_posts['most_swipe_post']})
+    return render(request, 'frontend/homepage.html', {'posts': all_posts_resp, 'special_posts_flag': special_posts['flag'],
+        'latest_post' : special_posts['latest_post'], "cheapest_post" : special_posts['cheapest_post'], 
+        "most_swipe_post" : special_posts['most_swipe_post']})
 
 def about(request):
     return render(request, 'frontend/about.html')
@@ -85,10 +87,10 @@ def show_special_posts(request):
 
     flag = (len(all_posts_resp) > 0)
     return {'latest_post' : latest_post, 'flag' : str(flag), "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post}
-    '''
-    return render(request, 'frontend/special_posts.html', {'latest_post' : latest_post, 'flag' : str(flag),
-                                                    "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post})
-    '''
+
+    # return render(request, 'frontend/special_posts.html', {'latest_post' : latest_post, 'flag' : str(flag),
+    #                                                 "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post})
+
 def post_detail(request, pid):
     url = 'http://exp:8000/posts/' + str(pid) + "/"
     req = urllib.request.Request(url)
