@@ -370,8 +370,8 @@ def profile_update(request):
 
             messages.success(request, "Your account has been updated.")
             response = HttpResponseRedirect(reverse("frontend:profile"))
-            response.delete_cookie("username")
-            response.delete_cookie("first_name")
+            #response.delete_cookie("username")
+            #response.delete_cookie("first_name")
             response.set_cookie("username", form.cleaned_data.get('username'))
             response.set_cookie("first_name", form.cleaned_data.get('first_name'))
             return response
