@@ -20,11 +20,9 @@ def homepage(request):
     special_posts = show_special_posts(request)
     if auth:
         if check_auth(auth):
-            return render(request, 'frontend/homepage.html', {'posts': all_posts_resp, 'special_posts': special_posts})
+            return render(request, 'frontend/homepage.html', {'posts': all_posts_resp, 'special_posts_flag': special_posts['flag'],'latest_post' : special_posts['latest_post'], "cheapest_post" : special_posts['cheapest_post'], "most_swipe_post" : special_posts['most_swipe_post']})
 
-    return render(request, 'frontend/homepage.html', {'posts': all_posts_resp, 'special_posts_flag': special_posts['flag'],
-        'latest_post' : special_posts['latest_post'], "cheapest_post" : special_posts['cheapest_post'], 
-        "most_swipe_post" : special_posts['most_swipe_post']})
+    return render(request, 'frontend/homepage.html', {'posts': all_posts_resp, 'special_posts_flag': special_posts['flag'],'latest_post' : special_posts['latest_post'], "cheapest_post" : special_posts['cheapest_post'], "most_swipe_post" : special_posts['most_swipe_post']})
 
 def about(request):
     return render(request, 'frontend/about.html')
@@ -87,10 +85,10 @@ def show_special_posts(request):
 
     flag = (len(all_posts_resp) > 0)
     return {'latest_post' : latest_post, 'flag' : str(flag), "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post}
-
-    # return render(request, 'frontend/special_posts.html', {'latest_post' : latest_post, 'flag' : str(flag),
-    #                                                 "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post})
-
+    '''
+    return render(request, 'frontend/special_posts.html', {'latest_post' : latest_post, 'flag' : str(flag),
+                                                    "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post})
+    '''
 def post_detail(request, pid):
     url = 'http://exp:8000/posts/' + str(pid) + "/"
     req = urllib.request.Request(url)
@@ -98,17 +96,9 @@ def post_detail(request, pid):
     resp = json.loads(resp_json)
     err = False
     if "error status" in resp.keys():
-        err = True
-        seller = "invalid seller"
-        seller_id = -1
-    else:
-        resp.pop('url')
-        seller = resp['seller']
         resp.pop('seller')
-        seller_id = resp['seller_id']
-        resp.pop('seller_id')
-    return render(request, "frontend/post_detail.html", {'post': resp, 'seller': seller, 
-                                                            'seller_id': seller_id,'err': err})
+    resp.pop('url')
+    return render(request, "frontend/post_detail.html", {'post': resp, 'err': err})
 
 
 def sign_up(request):
