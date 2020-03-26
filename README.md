@@ -30,7 +30,7 @@ http://localhost:8001/api/v1/user/ GET to show all User intances, POST to add cr
 
 http://localhost:8001/api/v1/user/1/ GET to show user with id=1, PUT to edit or DELETE to delete user instance
 
-Similarly, replace "user" keyword with "post" or "school" to play with School models :)
+Similarly, replace "user" keyword with "post" or "school" to play with Post, School models :)
 
 Update as of Project 4 (3/25/2020):
 
