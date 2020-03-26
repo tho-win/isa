@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from urllib.error import URLError, HTTPError
-from frontend.forms import SignUpForm, LogInForm, CreatePostForm
+from frontend.forms import SignUpForm, LogInForm, CreatePostForm, ProfileUpdateForm
 from django.shortcuts import render, render_to_response
 from django.views.generic import TemplateView
 from .models import DummyUser
@@ -43,18 +43,19 @@ def user_detail(request, uid):
     req = urllib.request.Request(url)
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
-    if (resp['ok']):
-        return render(request, "frontend/user_detail.html", {'user': resp})
-    else: 
-        err_msg = "Sorry! This user doesn't exist."
-        return render(request, "frontend/user_detail.html", {'err_msg': err_msg})
+    err = False
+    if "error status" in resp.keys():
+        err = True
+    else:
+        resp.pop("url")
+        resp.pop("password")
+    return render(request, "frontend/user_detail.html", {'user': resp, 'err': err})
 
 
 def show_all_posts(request):
     all_posts_req = urllib.request.Request('http://exp:8000/posts/')
     all_posts_resp_json = urllib.request.urlopen(all_posts_req).read().decode('utf-8')
     all_posts_resp = json.loads(all_posts_resp_json)
-
     return render(request, 'frontend/all_posts.html', {"posts" : all_posts_resp})
 
 
@@ -93,14 +94,25 @@ def post_detail(request, pid):
     req = urllib.request.Request(url)
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
-    if (resp['ok']):
-        return render(request, "frontend/post_detail.html", {'post': resp})
-    else: 
-        err_msg = "Sorry! This listing doesn't exist."
-        return render(request, "frontend/post_detail.html", {'err_msg': err_msg})
+    err = False
+    if "error status" in resp.keys():
+        err = True
+        seller = "invalid seller"
+        seller_id = -1
+    else:
+        resp.pop('url')
+        seller = resp['seller']
+        resp.pop('seller')
+        seller_id = resp['seller_id']
+        resp.pop('seller_id')
+    return render(request, "frontend/post_detail.html", {'post': resp, 'seller': seller, 
+                                                            'seller_id': seller_id,'err': err})
 
 
 def sign_up(request):
+    if request.COOKIES.get('logged_in'):
+        messages.info(request, 'You must log out first to sign up for another account.')
+        return HttpResponseRedirect(reverse('frontend:homepage'))
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -131,27 +143,23 @@ def sign_up(request):
                 dummyuser.delete()
                 return render(request, 'frontend/signup.html', {'form':form})
         
-            username = resp['username']
-            password = resp['password']
-            auth = login_exp_api(username, password) 
-            authenticator = auth['authenticator']
-
             s = "Account created for " + form.cleaned_data.get("username") + "!"
             messages.success(request, s)
             response = HttpResponseRedirect(reverse('frontend:login'))
-            response.set_cookie("auth", authenticator)
             return response
-            
     else:
         form = SignUpForm()
     return render(request, 'frontend/signup.html', {'form':form})
 
 
 def login(request):
+    if request.COOKIES.get('logged_in'):
+        messages.info(request, 'You must log out first to log in another account.')
+        return HttpResponseRedirect(reverse('frontend:homepage'))
     # If we received a GET request instead of a POST request
     if request.method == 'GET':
         # display the login form page
-        next = request.GET.get('next') or reverse('frontend:homepage')
+        # mynext = request.GET.get('next') or reverse('frontend:homepage')
         form = LogInForm()
         return render(request, 'frontend/login.html', {'form':form})
 
@@ -166,9 +174,6 @@ def login(request):
     # Sanitize username and password fields
     username = form.cleaned_data['username']
     password = form.cleaned_data['password']
-
-    # Get next page
-    next = form.cleaned_data.get('next') or reverse('frontend:homepage')
 
     # Send validated information to our experience layer
     resp = login_exp_api(username, password)    
@@ -191,10 +196,16 @@ def login(request):
     # Set their login cookie and redirect to back to wherever they came from
     authenticator = resp['authenticator']
     first_name = resp['first_name']
+    user_id = resp['user_id']
 
-    response = HttpResponseRedirect(next)
+    mynext = request.GET.get('next') 
+    response = HttpResponseRedirect(reverse('frontend:homepage'))
+    if mynext:
+         response = HttpResponseRedirect(mynext)
 
     response.set_cookie("auth", authenticator)
+    response.set_cookie("user_id", user_id)
+    response.set_cookie("username", username)
     response.set_cookie("first_name", first_name)
     response.set_cookie("logged_in", True)
     
@@ -230,6 +241,8 @@ def logout(request):
     response.delete_cookie("auth")
     response.delete_cookie("first_name")
     response.delete_cookie("logged_in")
+    response.delete_cookie("username")
+    response.delete_cookie("user_id")
     return response
 
 
@@ -237,40 +250,142 @@ def logout_success(request):
     return render(request, 'frontend/logout_success.html')
 
 
-# def create_listing(request):
-#     # Try to get the authenticator cookie
-#     auth = request.COOKIES.get('auth')
+def create_listing(request):
+     # Try to get the authenticator cookie
+    auth = request.COOKIES.get('auth')
+    logged_in = request.COOKIES.get('logged_in')
+    # If the authenticator cookie wasn't set...
+    if not logged_in:
+        # Handle user not logged in while trying to create a listing
+        messages.info(request, "Please log in your account to create a post.")
+        return HttpResponseRedirect(reverse("frontend:login") + "?next=" + reverse("frontend:create_listing"))
 
-#     # If the authenticator cookie wasn't set...
-#     if not auth:
-#       # Handle user not logged in while trying to create a listing
-#       return HttpResponseRedirect(reverse("frontend:login") + "?next=" + reverse("frontend:create_listing"))
+    empty_form = CreatePostForm()
+    if request.method == 'POST':
+        form = CreatePostForm(request.POST)
+        if form.is_valid():
+            data = {}
+            data['title'] = form.cleaned_data.get('title')
+            data['content'] = form.cleaned_data.get('content')
+            data['price'] = form.cleaned_data.get('price')
+            data['remaining_nums'] = form.cleaned_data.get('remaining_nums')
+            data['pickup_address'] = form.cleaned_data.get('pickup_address')
 
-#     # If we received a GET request instead of a POST request...
-#     if request.method == 'GET':
-#         # Return to form page
-#         form = CreatePostForm()
-#         return render(request, "frontend/create_listing.html", {"form" : form})
+            data['seller'] = request.COOKIES.get('username')
+            data['seller_id'] = request.COOKIES.get('user_id')
 
-#     # Otherwise, create a new form instance with our POST data
-#     form = CreatePostForm(request.POST)
+            data = urllib.parse.urlencode(data).encode()
+            req = urllib.request.Request('http://exp:8000/create_listing/', data=data)
+            try:
+                response = urllib.request.urlopen(req)
+            except urllib.error.URLError as e:
+                messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request3.")
+                return render(request, 'frontend/create_listing.html', {"form":empty_form})
+            resp_json = response.read().decode('utf-8')
+            resp = json.loads(resp_json)
 
-#     # Send validated information to our experience layer
-#     resp = create_listing_exp_api(auth, ...)
+            if not resp[0]['ok']:
+                messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request4.")
+                return render(request, 'frontend/create_listing.html', {"form":empty_form})
+            messages.success(request, "Your post has been created.")
+            return HttpResponseRedirect(reverse('frontend:homepage'))
 
-
-# def create_listing_exp_api
-
-
-
-
-
-
-
-
+    return render(request, "frontend/create_listing.html", {"form":empty_form})
 
 
+def profile(request):
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        messages.info(request, "Please log in your account to view your profile.")
+        return HttpResponseRedirect(reverse("frontend:login") + "?next=" + reverse("frontend:profile"))
 
+    username = request.COOKIES.get('username')
+    user_id = request.COOKIES.get('user_id')
+    url = 'http://exp:8000/users/' + str(user_id) + "/"
+    req = urllib.request.Request(url)
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    if "error status" in resp.keys():
+        messages.info(request, "Sorry, we failed to authenticate your account. Please log in again.")
+        return HttpResponseRedirect(reverse("frontend:logout"))
+    date_joined = resp['date_joined'][:10]
+    resp['date_joined'] = date_joined
+    resp.pop('url')
+    resp.pop('password')
+
+    return render(request, "frontend/profile.html", resp)
+
+
+def profile_update(request):
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        messages.info(request, "Please log in your account to update your profile.")
+        return HttpResponseRedirect(reverse("frontend:login") + "?next=" + reverse("frontend:profile"))
+
+    # get current user information 
+    username = request.COOKIES.get('username')
+    user_id = request.COOKIES.get('user_id')
+    url = 'http://exp:8000/users/' + str(user_id) + "/"
+    req = urllib.request.Request(url)
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    if "error status" in resp.keys():
+        messages.info(request, "Sorry, we failed to authenticate your account. Please log in again.")
+        return HttpResponseRedirect(reverse("frontend:logout"))
+
+    # create a dummyuser to pre-fill the form
+    dummyuser = DummyUser.objects.create(
+                    email = resp["email"],
+                    username = resp["username"],
+                    first_name = resp["first_name"],
+                    last_name = resp["last_name"],
+                    computing_id = resp["computing_id"],
+                    phone_number = resp["phone_number"],
+                    bio = resp["bio"])
+
+    null_form = ProfileUpdateForm(instance=dummyuser)
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, instance=dummyuser)   
+        if form.is_valid():
+            data = {}
+            data['id'] = user_id
+            data['username'] = form.cleaned_data.get('username')
+            data['email'] = form.cleaned_data.get('email')
+            data['first_name'] = form.cleaned_data.get('first_name')
+            data['last_name'] = form.cleaned_data.get('last_name')
+            data['computing_id'] = form.cleaned_data.get('computing_id')
+            data['phone_number'] = form.cleaned_data.get('phone_number')
+            data['bio'] = form.cleaned_data.get('bio')
+
+            data = urllib.parse.urlencode(data).encode()
+            req = urllib.request.Request('http://exp:8000/profile_update/', data=data)
+            try:
+                response = urllib.request.urlopen(req)
+            except urllib.error.URLError as e:
+                dummyuser.delete()
+                messages.info(request, "Sorry, we failed to update your profile. Please log in again.")
+                return render(request, "frontend/profile_update.html", {"form" : null_form})
+
+            resp_json = response.read().decode('utf-8')
+            resp = json.loads(resp_json)
+            dummyuser.delete()
+            if not resp['ok']:
+                if resp['err_code'] == 3:
+                    messages.info(request, "Username " + form.cleaned_data.get('username') + " is already taken. Please try another one.")
+                elif resp['err_code'] == 2:
+                    messages.info(request, "Email " + form.cleaned_data.get('email') + " is already taken. Please try another one.")
+                return render(request, "frontend/profile_update.html", {"form" : null_form})
+
+            messages.success(request, "Your account has been updated.")
+            response = HttpResponseRedirect(reverse("frontend:profile"))
+            response.delete_cookie("username")
+            response.delete_cookie("first_name")
+            response.set_cookie("username", form.cleaned_data.get('username'))
+            response.set_cookie("first_name", form.cleaned_data.get('first_name'))
+            return response
+
+    dummyuser.delete()
+    return render(request, "frontend/profile_update.html", {"form" : null_form})
 
 
 

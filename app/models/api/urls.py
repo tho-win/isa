@@ -13,4 +13,5 @@ router.register(r'authenticator', AuthenticatorViewSet, basename="authenticator"
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('get_user/<int:uid>/', views.get_user, name='get_user')
 ]

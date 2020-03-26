@@ -67,8 +67,8 @@ class PostTest(TestCase):
 		self.assertNotEqual("Description.", self.test_post.content)
 
 	def test_delete_post(self):
-		tmp_post = Post.objects.create(title="Temp Post", content="xxx", 
-										price=1.00, seller=self.test_user, remaining_nums=10)
+		tmp_post = Post.objects.create(title="Temp Post", content="xxx", price=1.00,
+										seller=self.test_user.username, seller_id = self.test_user.id, remaining_nums=10)
 		tmp_post.save()
 		self.assertIn(tmp_post, Post.objects.all())
 		tmp_post.delete()
@@ -167,7 +167,7 @@ class APITest(TestCase):
 		self.assertEqual(response.json()["phone_number"], "1234567890")
 
 	def test_success_response_delete_instance(self):
-		temp_post = Post.objects.create(seller=self.test_user, title="temp title", 
+		temp_post = Post.objects.create(seller=self.test_user.username, seller_id = self.test_user.id, title="temp title", 
 										content="temp content", price=1, remaining_nums=10)
 		temp_post.save()
 		response_before_delete = self.client.get(reverse("post-list")) 

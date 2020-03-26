@@ -18,12 +18,14 @@ class CustomUser(AbstractUser):
     	return self.username
 
     def create_post(self, title: str, content: str, price: float, swipes: int):
-        post = Post.objects.create(title=title, seller=self, content=content, price=price, remaining_nums=swipes)
+        post = Post.objects.create(title=title, seller=self.username, seller_id=self.id, content=content, price=price, remaining_nums=swipes)
         post.save()
         return post
 
+
 class Post(models.Model):
-    seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    seller = models.CharField(max_length=100, default="")
+    seller_id = models.IntegerField()
     title = models.CharField(max_length=100, default="")
     content = models.TextField(max_length=3000, default="")
     pub_date = models.DateTimeField(default=timezone.now)
@@ -49,7 +51,6 @@ class Post(models.Model):
         return now - datetime.timedelta(days=90) <= self.pub_date <= now
 
 
-
 class School(models.Model):
     name = models.CharField(max_length=300)
     city = models.CharField(max_length=200)
@@ -58,7 +59,10 @@ class School(models.Model):
     def __str__(self):
     	return self.name
 
+
 class Authenticator(models.Model):
     authenticator = models.CharField(max_length=256)
     user_id = models.IntegerField()
     date_created = models.DateTimeField(default=timezone.now)
+
+    

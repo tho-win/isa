@@ -2,9 +2,10 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from .serializers import *
+from django.core import serializers as core_serializers
 from .models import *
 from rest_framework.decorators import action
 
@@ -37,3 +38,21 @@ class PostViewSet(viewsets.ModelViewSet):
 class SchoolViewSet(viewsets.ModelViewSet):
 	queryset = School.objects.all().order_by('name')
 	serializer_class = SchoolSerializer
+
+
+def get_user(request, uid):
+	if request.method == "POST":
+		user = CustomUser.objects.filter(id = uid)[0]
+		user.username = request.POST.get('username')
+		user.email = request.POST.get('email')
+		user.first_name = request.POST.get('first_name')
+		user.last_name = request.POST.get('last_name')
+		user.computing_id = request.POST.get('computing_id')
+		user.phone_number = request.POST.get('phone_number')
+		user.bio = request.POST.get('bio')
+		user.save()
+		return JsonResponse({'ok': True}, safe=False) 
+	else:
+		return JsonResponse({'ok': False, 'result': 'not post'}, safe=False)
+
+

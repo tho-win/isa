@@ -8,8 +8,8 @@ UVA SwipeMe : Post Detail
 
 {% block content %}
 
-{% if err_msg %}
-<h2>{{ err_msg }}</h2>
+{% if err %}
+    <h2 style="text-align: center">Invalid post ID</h2>
 {% else %}
     {% if user %}
         <ul>
