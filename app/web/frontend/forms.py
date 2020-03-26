@@ -44,3 +44,25 @@ class CreatePostForm(forms.Form):
     price = forms.FloatField(min_value=0, label="How much do you want to sell for a single swipe?")
     remaining_nums = forms.IntegerField(min_value=0, label="How many swipes do you plan to sell?")
     pickup_address = forms.CharField(max_length=300, label="Where do you plan to meet the buyer?")
+
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = DummyUser
+        fields = ["username", "email", "first_name", "last_name", "computing_id", "phone_number", "bio"]
+        widgets = {
+            'email': forms.EmailInput(),
+            'phone_number': forms.NumberInput(),
+            'bio': forms.Textarea(attrs={'cols': 10, 'rows': 4}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['bio'].required = False
+
+
+
+
+
+

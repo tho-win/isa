@@ -4,7 +4,7 @@ from .models import *
 class CustomUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'url', 'username', 'password', 'email', 'first_name', 'last_name', 'computing_id', 'phone_number', 'bio')
+        fields = ('id', 'url', 'username', 'password', 'email', 'first_name', 'last_name', 'computing_id', 'phone_number', 'bio', 'date_joined')
 
 
 class AuthenticatorSerializer(serializers.HyperlinkedModelSerializer):

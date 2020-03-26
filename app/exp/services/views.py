@@ -104,8 +104,8 @@ def create_user(request):
 
         resp_json = response.read().decode('utf-8')
         resp = json.loads(resp_json)
-        return JsonResponse([{'ok': True, 'username': request.POST.get('username'), 'password': request.POST.get('password'),
-                              'email': request.POST.get('email')}], safe=False)   
+        return JsonResponse({'ok': True, 'username': request.POST.get('username'), 'password': request.POST.get('password'),
+                              'email': request.POST.get('email')}, safe=False)   
     else: 
         return JsonResponse([{'return': 'for not post'}], safe=False)
 
@@ -134,7 +134,7 @@ def create_listing(request):
         resp = json.loads(resp_json)
         return JsonResponse([{'ok': True}], safe=False) 
     else: 
-        return JsonResponse([{'result': 'no post'}], safe=False)
+        return JsonResponse([{'result': 'not post'}], safe=False)
 
 
 @csrf_exempt
@@ -159,17 +159,42 @@ def login(request):
             return JsonResponse(resp, safe=False)
         encodedPassword = resp[0]['password']
         first_name = resp[0]['first_name']
+        user_id = resp[0]['id']
         if check_password(password, encodedPassword):
             user_id = resp[0]['id']
             authenticator = create_authenticator(user_id)
-            resp = {'ok': True, 'authenticator': authenticator, 'first_name': first_name}
+            resp = {'ok': True, 'authenticator': authenticator, 'first_name': first_name, 'user_id': user_id}
             return JsonResponse(resp, safe=False)
         # username and password don't match
         else:
             resp = {'ok': False, "err_code": 1}
             return JsonResponse(resp, safe=False)
         
-    else: return JsonResponse({'result': 'no post'}, safe=False)
+    else: 
+        return JsonResponse({'result': 'not post'}, safe=False)
+
+
+@csrf_exempt
+def profile_update(request):
+    if request.method == 'POST':
+        data = request.POST
+        data = urllib.parse.urlencode(data).encode()
+        url = 'http://models:8000/api/v1/user/' + str(request.POST.get("id")) + "/"
+        req = urllib.request.Request(url=url, data=data, method='PATCH')
+        try: 
+            response = urllib.request.urlopen(req)
+        except urllib.error.URLError as e:
+            get_url = 'http://models:8000/api/v1/user/?username=' + request.POST.get('username')
+            get_req = urllib.request.Request(get_url)
+            get_resp_json = urllib.request.urlopen(get_req).read().decode('utf-8')
+            get_resp = json.loads(get_resp_json)
+            if (len(get_resp) > 0):
+                return JsonResponse({'ok': False, "err_code": 3}, safe=False)
+            else:
+                return JsonResponse({'ok': False, "err_code": 2}, safe=False) 
+        return JsonResponse({'ok': True}, safe=False) 
+    else:
+        return JsonResponse({'ok': False, 'result': 'not post'}, safe=False)
 
 
 def create_authenticator(user_id):
@@ -198,6 +223,7 @@ def check_auth(request):
             return JsonResponse({'ok': 0}, safe=False)
         return JsonResponse({'ok': 1}, safe=False)
     else: return JsonResponse({'GET request': 'invalid'}, safe=False)
+
 
 @csrf_exempt
 def delete_auth(request, auth):

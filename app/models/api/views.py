@@ -41,6 +41,18 @@ class SchoolViewSet(viewsets.ModelViewSet):
 
 
 def get_user(request, uid):
-	q_set = core_serializers.serialize("json", CustomUser.objects.filter(id = uid))
-	data = {'user' : q_set, "type": str(type(CustomUser.objects.filter(id = uid)[0]))}
-	return JsonResponse(data)
+	if request.method == "POST":
+		user = CustomUser.objects.filter(id = uid)[0]
+		user.username = request.POST.get('username')
+		user.email = request.POST.get('email')
+		user.first_name = request.POST.get('first_name')
+		user.last_name = request.POST.get('last_name')
+		user.computing_id = request.POST.get('computing_id')
+		user.phone_number = request.POST.get('phone_number')
+		user.bio = request.POST.get('bio')
+		user.save()
+		return JsonResponse({'ok': True}, safe=False) 
+	else:
+		return JsonResponse({'ok': False, 'result': 'not post'}, safe=False)
+
+

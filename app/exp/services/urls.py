@@ -13,4 +13,5 @@ urlpatterns = [
     path('check_auth/', views.check_auth, name='check_auth'),
     path('create_listing/', views.create_listing, name='create_listing'),
     path('delete/auth/<str:auth>', views.delete_auth, name='delete_auth'),
+    path('profile_update/', views.profile_update, name='profile_update')
 ]
