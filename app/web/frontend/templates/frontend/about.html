@@ -1,0 +1,36 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : Home
+{% endblock title %} 
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'frontend/homepage.css' %}">
+{% endblock head %}
+
+{% block content %}
+
+<h1 class="home" style="text-align: center; margin-top: 30px">About</h1>
+<i><h5 style="text-align: center; color: blue; margin-top: 30px">Welcome to UVA SwipeMe!</h5></i>
+
+<div style="text-align: center; margin-bottom: 1%">
+	An application that allows students at University of Virginia to make the best use of their remaining <br> meal swipes by selling them to other fellow students.
+</div>
+
+<div style="margin: 2% 20% 0 5%">
+	<p>
+		Have you ever been bothered by the extra meal swipes left in your meal plan at the end of semester?<br>
+		Have you ever run out of meal swipes near the end of semester and have to use credit card to pay more money to get into the dinning hall?
+	</p>
+	<h5>
+		If you used to have those experience, then <i><strong>this app is for YOU!</strong></i>
+	</h5>
+	<img src="https://static01.nyt.com/images/2018/08/26/business/26VIEW.illo/26VIEW.illo-articleLarge.jpg?quality=75&auto=webp&disable=upscale">
+	<h5>
+		On this app, you can save some money, make some extra cash and help other fellow students out! <br>
+	</h5>
+
+</div>
+
+{% endblock content %}

@@ -11,11 +11,15 @@ UVA SwipeMe : User Detail
 {% if err %}
     <h2 style="text-align: center">Invalid user ID</h2>
 {% else %}
-	<ul>
-    {% for key, value in user.items %}
-        <li>{{ key }}: {{ value }}</li>
-    {% endfor %}
-    </ul>
+    {% if user %}
+        <ul>
+        {% for key, value in user.items %}
+        {% if not key == 'password' and not value == '' %}
+            <li>{{ key }}: {{ value }}</li>
+        {% endif %}
+        {% endfor %}
+        </ul>
+    {% endif %}
 {% endif %}
 
 {% endblock content %}

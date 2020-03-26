@@ -8,6 +8,7 @@
   <link rel="icon"
         href="https://i.pinimg.com/236x/65/fd/23/65fd23aae970644c82ce0602f00ac525--university-of-virginia-stickers.jpg">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -33,6 +34,12 @@
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin-left: 50%">
     <ul class="navbar-nav" style="text-align:right">
+      <li class="nav-item" type="link">
+          <a class="nav-link" href="{% url 'frontend:homepage' %}">Home</a>
+        </li>
+        <li class="nav-item" type="link">
+          <a class="nav-link" href="{% url 'frontend:about' %}">About</a>
+        </li>
       {% if request.COOKIES.logged_in %}
         <!-- <li class="nav-item" type="link"></li>
           <p class="navbar-brand">Hello, {{ request.COOKIES.first_name }}!</p>
@@ -47,9 +54,6 @@
           <a class="nav-link" href="{% url 'frontend:logout' %}">Log out</a>
         </li>
       {% else %}
-        <li class="nav-item" type="link">
-          <a class="nav-link" href="{% url 'frontend:homepage' %}">Home</a>
-        </li>
         <li class="nav-item" type="link">
           <a class="nav-link" href="{% url 'frontend:login' %}">Log in</a>
         </li>
@@ -77,6 +81,8 @@
   <div class="container text-center">
     <small>Copyright &copy; SwipeMe · Powered by <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>, <a
         href="https://www.w3schools.com" target="_blank">W3Schools</a></small>
+    <br>
+    <small>Note from developer: currently, we <b>only</b> support meal swipe trade within UVA student community. But we are actively working with students from other universities to gather necessary information so that we can expand our app to student communities in other universities.</small>
   </div>
 </footer>
 </body>
