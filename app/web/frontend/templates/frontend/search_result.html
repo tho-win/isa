@@ -10,7 +10,6 @@ UVA SwipeMe : Post Detail
 
 {% if result %}
 Search result for "{{ query }}"
-{{ result }}
     {% for item in result %}
         <a href="{% url 'frontend:post_detail' item.id %}"><h4>{{ item.title }}</h4></a>
         <li>Pick up: {{ item.pickup_address }}</li>
