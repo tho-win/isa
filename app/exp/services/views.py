@@ -9,7 +9,8 @@ from django.contrib.auth.hashers import make_password, check_password
 import os
 import hmac
 from django.conf import settings
-
+from kafka import KafkaProducer
+from elasticsearch import Elasticsearch
 
 def show_all_users(request):
     req = urllib.request.Request('http://models:8000/api/v1/user/')
@@ -58,19 +59,24 @@ def get_user_by_username(username):
     return resp
 
 def post_detail(request, pid):
+    resp = get_post_by_id(pid)
+    return JsonResponse(resp, safe=False)
+    
+
+def get_post_by_id(pid):
     url = 'http://models:8000/api/v1/post/' + str(pid) + "/"
     req = urllib.request.Request(url)
     try:
         response = urllib.request.urlopen(req)
     except urllib.error.URLError as e:
-        err_resp = {"error status" : e.code, "error reason": e.reason}
-        return JsonResponse(err_resp, safe=False)
+        err_resp = {'ok': False, "error status" : e.code, "error reason": e.reason}
+        return err_resp
     resp_json = response.read().decode('utf-8')
     resp = json.loads(resp_json)
     seller_url = resp['seller']
     resp['seller'] = get_user_by_username(seller_url)
     resp['ok'] = True
-    return JsonResponse(resp, safe=False)
+    return resp
 
 # def retrieve_user(request, uid):
 #     url = 'http://models:8000/api/v1/get_user/' + str(uid) + "/"
@@ -148,6 +154,7 @@ def create_listing(request):
 
         resp_json = response.read().decode('utf-8')
         resp = json.loads(resp_json)
+        queue_listing(resp)
         return JsonResponse([{'ok': True}], safe=False) 
     else: 
         return JsonResponse([{'result': 'not post'}], safe=False)
@@ -258,3 +265,33 @@ def delete_auth(request, auth):
     except URLError as e:
         return JsonResponse({'error': 'Cannot delete auth'}, safe=False)
         
+def queue_listing(listing):
+    producer = KafkaProducer(bootstrap_servers='kafka:9092')
+    listing.pop('seller')
+    listing.pop('url')
+    new_listing = listing
+    producer.send('new-listing-topic', json.dumps(new_listing).encode('utf-8'))
+
+@csrf_exempt
+def search_listing(request):
+    if request.method == 'POST':
+        query = request.POST.get('query')
+        es = Elasticsearch(['es'])
+        recall = es.search(index='listing_index', body={'query': {'query_string': {'query': query}}, 'size': 10})
+        if recall['hits']['total']['value'] == 0:
+            return JsonResponse({'ok': False})
+        else:
+            recall = process_recall(recall['hits'])
+            ret = {'ok': True, 'result': recall}
+            return JsonResponse(ret, safe=False)
+    else: return JsonResponse({'return': 'not post'}, safe=False)
+
+def process_recall(recall):
+    ret = []
+    for item in recall['hits']:
+        listing_id = item['_source']['id']
+        listing = get_post_by_id(listing_id)
+        ret.append(listing)
+    return ret
+
+

@@ -8,6 +8,7 @@
   <link rel="icon"
         href="https://i.pinimg.com/236x/65/fd/23/65fd23aae970644c82ce0602f00ac525--university-of-virginia-stickers.jpg">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -32,8 +33,14 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin-left: 50%">
+  <form class="form-inline my-2 my-lg-0" action="{% url 'frontend:search_listing' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" placeholder="Search listings.." name="search" style="width: 400px;">
+    <button type="submit"><i class="fa fa-search"></i></button>
+  </form>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin-left: 30%">
     <ul class="navbar-nav" style="text-align:right">
+      
       {% if request.COOKIES.logged_in %}
         <li class="nav-item"></li>
           <p class="navbar-brand">Hello, {{ request.COOKIES.first_name }}!</p>

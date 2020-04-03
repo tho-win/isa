@@ -17,7 +17,7 @@ UVA SwipeMe : All Posts
 		<ul>
     		{% for post in posts %}
     		<div style="margin-top: 3%">
-    			<b>{{ post.title }}</b> <small>posted by</small> <b>{{ post.seller }}</b> <br>
+    			<b>{{ post.title }}</b> <small>posted by </small><b><a href="{% url 'frontend:user_detail' post.seller.0.id %}">{{ post.seller.0.first_name }} {{ post.seller.0.last_name }}</a></b> <br>
         		Description: <em>{{ post.content }}</em> <br>
         		<ul>
         			<li>Posted on: {{ post.pub_date }}</li>

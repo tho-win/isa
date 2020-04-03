@@ -5,12 +5,12 @@
     "fields": {
         "seller": "haoranzhu",
         "seller_id": 3,
-        "title": "newcomb sell",
-        "content": "1",
+        "title": "Swipes at Newcomb",
+        "content": "Got some swipe to trade at Newcomb dinning hall",
         "pub_date": "2020-03-25T03:13:25.734Z",
         "price": 1.0,
         "remaining_nums": 1,
-        "pickup_address": "1"
+        "pickup_address": "Anywhere near E-way"
     }
 },
 {
@@ -19,12 +19,12 @@
     "fields": {
         "seller": "haoranzhu",
         "seller_id": 3,
-        "title": "test post 3",
+        "title": "Cheap swipe at O'Hill",
         "content": "3",
         "pub_date": "2020-03-25T03:23:53.268Z",
         "price": 3.0,
         "remaining_nums": 3,
-        "pickup_address": "3"
+        "pickup_address": "New dorm"
     }
 },
 {
@@ -33,12 +33,12 @@
     "fields": {
         "seller": "haoranzhu",
         "seller_id": 3,
-        "title": "test post 1",
-        "content": "1",
+        "title": "50% off plus dollar",
+        "content": "I have some plus dollars extra to sell here",
         "pub_date": "2020-03-25T19:25:49.745Z",
-        "price": 1.0,
-        "remaining_nums": 1,
-        "pickup_address": "1"
+        "price": 25.0,
+        "remaining_nums": 50,
+        "pickup_address": "On grounds only"
     }
 },
 {
