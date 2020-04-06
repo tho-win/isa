@@ -1,9 +1,25 @@
 from kafka import KafkaConsumer
 from elasticsearch import Elasticsearch
 import json
+import time
 
-#wait command here
-es = Elasticsearch(['es'])
+time.sleep(120)
+
+while True:
+    try:
+        es = Elasticsearch(['es'])
+    except:
+        time.sleep(30)
+    else:
+        break
+
+while True:
+    try:
+        consumer = KafkaConsumer('new-listings-topic', group_id='listing-indexer', bootstrap_servers=['kafka:9092'])
+    except:
+        time.sleep(10)
+    else:
+        break
 
 item1 = {"id": 1,
     "seller": "haoranzhu",
@@ -37,8 +53,6 @@ es.index(index='listing_index', doc_type='listing', id=item1['id'], body=item1)
 es.index(index='listing_index', doc_type='listing', id=item2['id'], body=item2)
 es.index(index='listing_index', doc_type='listing', id=item3['id'], body=item3)
 es.indices.refresh(index="listing_index")
-
-consumer = KafkaConsumer('new-listings-topic', group_id='listing-indexer', bootstrap_servers=['kafka:9092'])
 
 while True:
     for message in consumer:
