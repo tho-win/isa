@@ -2,9 +2,11 @@ from kafka import KafkaConsumer
 from elasticsearch import Elasticsearch
 import json
 
+#wait command here
 es = Elasticsearch(['es'])
 
-item1 = {"id": 1
+item1 = {"id": 1,
+    "seller": "haoranzhu",
     "seller_id": 3,
     "title": "Swipes at Newcomb",
     "content": "Got some swipe to trade at Newcomb dinning hall",
@@ -41,5 +43,6 @@ consumer = KafkaConsumer('new-listings-topic', group_id='listing-indexer', boots
 while True:
     for message in consumer:
         new_item = json.loads((message.value).decode('utf-8'))
+        print(new_item)
         es.index(index='listing_index', doc_type='listing', id=new_item['id'], body=new_item)
         es.indices.refresh(index="listing_index")

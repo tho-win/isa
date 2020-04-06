@@ -279,6 +279,7 @@ def create_listing(request):
                 messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request4.")
                 return render(request, 'frontend/create_listing.html', {"form":empty_form})
             messages.success(request, "Your post has been created.")
+            #messages.success(request, resp[0]['queue_ret'])
             return HttpResponseRedirect(reverse('frontend:homepage'))
 
     return render(request, "frontend/create_listing.html", {"form":empty_form})

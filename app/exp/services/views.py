@@ -12,6 +12,8 @@ from django.conf import settings
 from kafka import KafkaProducer
 from elasticsearch import Elasticsearch
 
+producer = KafkaProducer(bootstrap_servers='kafka:9092')
+
 def show_all_users(request):
     req = urllib.request.Request('http://models:8000/api/v1/user/')
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
@@ -266,11 +268,11 @@ def delete_auth(request, auth):
         return JsonResponse({'error': 'Cannot delete auth'}, safe=False)
         
 def queue_listing(listing):
-    producer = KafkaProducer(bootstrap_servers='kafka:9092')
-    listing.pop('seller')
+    #producer = KafkaProducer(bootstrap_servers='kafka:9092')
+    #listing.pop('seller')
     listing.pop('url')
     new_listing = listing
-    producer.send('new-listing-topic', json.dumps(new_listing).encode('utf-8'))
+    producer.send('new-listings-topic', json.dumps(new_listing).encode('utf-8'))
 
 @csrf_exempt
 def search_listing(request):
