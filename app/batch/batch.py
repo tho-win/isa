@@ -50,13 +50,18 @@ item3 = {"id": 3,
     "pickup_address": "On grounds only"}
     
 es.index(index='listing_index', doc_type='listing', id=item1['id'], body=item1)
+es.update(index='listing_index', doc_type='listing', id=item1['id'] , body={ 'script' : 'ctx._source.visits = 0'})
 es.index(index='listing_index', doc_type='listing', id=item2['id'], body=item2)
+es.update(index='listing_index', doc_type='listing', id=item2['id'] , body={ 'script' : 'ctx._source.visits = 0'})
 es.index(index='listing_index', doc_type='listing', id=item3['id'], body=item3)
+es.update(index='listing_index', doc_type='listing', id=item3['id'] , body={ 'script' : 'ctx._source.visits = 0'})
 es.indices.refresh(index="listing_index")
 
 while True:
     for message in consumer:
         new_item = json.loads((message.value).decode('utf-8'))
-        print(new_item)
+        # print(new_item)
         es.index(index='listing_index', doc_type='listing', id=new_item['id'], body=new_item)
+        es.update(index='listing_index', doc_type='listing', id=new_item['id'] , body={ 'script' : 'ctx._source.visits = 0'})
         es.indices.refresh(index="listing_index")
+

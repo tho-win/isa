@@ -73,7 +73,8 @@ services:
       - ./batch:/app
     networks:
       - batch_network
-    command: bash -c "python batch.py"
+    command: bash -c "python batch.py &&
+                      python post_vew.py"
 
 networks:
   backend:

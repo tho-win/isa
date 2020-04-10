@@ -279,7 +279,7 @@ def create_listing(request):
                 messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request4.")
                 return render(request, 'frontend/create_listing.html', {"form":empty_form})
             messages.success(request, "Your post has been created.")
-            #messages.success(request, resp[0]['queue_ret'])
+            messages.success(request, resp[0]['resp'])
             return HttpResponseRedirect(reverse('frontend:homepage'))
 
     return render(request, "frontend/create_listing.html", {"form":empty_form})
@@ -388,6 +388,9 @@ def search_listing(request):
         response = urllib.request.urlopen(req)
         resp_json = response.read().decode('utf-8')
         resp = json.loads(resp_json)
+        messages.success(request, resp['raw_recall'])
         if resp['ok']:
             return render(request, "frontend/search_result.html", {'query': query, 'result': resp['result']})
     return render(request, "frontend/search_result.html", {'query': query})
+
+    
