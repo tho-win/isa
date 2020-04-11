@@ -288,10 +288,10 @@ def search_listing(request):
             "field_value_factor": {"field": "visits","modifier": "log1p","missing": 0.1}}}})
         raw_recall = recall
         if recall['hits']['total']['value'] == 0:
-            return JsonResponse({'ok': False, 'raw_recall': str(raw_recall)})
+            return JsonResponse({'ok': False})
         else:
             recall = process_recall(recall['hits'])
-            ret = {'ok': True, 'result': recall, 'raw_recall': str(raw_recall)}
+            ret = {'ok': True, 'result': recall, 'raw_recall': str(raw_recall['hits']['hits'])}
             return JsonResponse(ret, safe=False)
     else: return JsonResponse({'return': 'not post'}, safe=False)
 
@@ -299,9 +299,12 @@ def search_listing(request):
 def process_recall(recall):
     ret = []
     for item in recall['hits']:
+        listing_score = {}
         listing_id = item['_source']['id']
         listing = get_post_by_id(listing_id)
-        ret.append(listing)
+        listing_score["listing"] = listing
+        listing_score["score"] = item['_score']
+        ret.append(listing_score)
     return ret
 
 

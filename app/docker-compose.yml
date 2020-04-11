@@ -73,8 +73,16 @@ services:
       - ./batch:/app
     networks:
       - batch_network
-    command: bash -c "python batch.py &&
-                      python post_vew.py"
+    command: bash -c "python batch.py"
+
+  access_log:
+    image: tp33/django
+    container_name: access_log
+    volumes:
+      - ./access_log:/app
+    networks:
+      - batch_network
+    command: bash -c "python post_view.py"
 
 networks:
   backend:

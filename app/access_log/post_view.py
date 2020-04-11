@@ -3,13 +3,13 @@ from elasticsearch import Elasticsearch
 import json
 import time
 
-time.sleep(10)
+time.sleep(30)
 
 while True:
     try:
         es = Elasticsearch(['es'])
     except:
-        time.sleep(10)
+        time.sleep(30)
     else:
         break
 
