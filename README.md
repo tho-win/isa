@@ -1,8 +1,26 @@
 This is a group project for CS 4260: Internet Scale Application at University of Virginia in Spring 2020 semester.
 
-Contact Info:
+### Contact Info: ###
+--------------
 
 Tho Nguyen (tnn7yc@virginia.edu); Erik Toor (evt8ed@virginia.edu); Haoran Zhu (hz3fr@virginia.edu)
+
+### Newest update for project 5: ###
+--------------
+
+**web container**: http://localhost:8000/search_listing is the page for users to search for listings by typing their queries
+
+**batch container**: batch.py file is the script for adding newly created listings into kafka queuing system
+
+**access_log container**: post_view.py is the script for accumulating clicks on any particular listing, which are then used to determine the ranking for search results
+
+**Note:** 
+- We did NOT include user_id in the access log as we believe that it would be more reasonable to also include non-logged in users' clicks when considering ranking.
+
+- It might take a while for scripts in batch/access_log container to process the addition to queue and for the queue to add those item into ES.
+
+### Useful URLs to naivgate the app: ###
+--------------
 
 Frontend:
 
@@ -18,7 +36,15 @@ http://localhost:8000/specialposts shows the latest post, post with most remaini
 
 http://localhost:8000/signup is the sign up page for user to create new account.
 
-http://localhost:8000/login is the page signed up users use to log in.
+http://localhost:8000/login is the page for signed up users use to log in.
+
+http://localhost:8000/logout is the page for signed in user to log out their account
+
+http://localhost:8000/profile is the page for signed in user to view thier profile
+
+http://localhost:8000/profile_update is the page for signed in user to update their profile
+
+http://localhost:8000/create_listing is the page for signed in user to create a new listing
 
 Services:
 
@@ -31,7 +57,3 @@ http://localhost:8001/api/v1/user/ GET to show all User intances, POST to add cr
 http://localhost:8001/api/v1/user/1/ GET to show user with id=1, PUT to edit or DELETE to delete user instance
 
 Similarly, replace "user" keyword with "post" or "school" to play with Post, School models :)
-
-Update as of Project 4 (3/25/2020):
-
-The website allows user to create new account (sign up), login, logout, creating new listing and display Profile page.
