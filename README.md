@@ -17,7 +17,7 @@ Tho Nguyen (tnn7yc@virginia.edu); Erik Toor (evt8ed@virginia.edu); Haoran Zhu (h
 **Note:** 
 - We did NOT include user_id in the access log as we believe that it would be more reasonable to also include non-logged in users' clicks when considering ranking.
 
-- It might take a while for scripts in batch/access_log container to process the addition to queue and for the queue to add those item into ES.
+- It might take a while for scripts in batch/access_log container to process the addition to queue and for the queue to add those items into ES.
 
 ### Useful URLs to naivgate the app: ###
 --------------
