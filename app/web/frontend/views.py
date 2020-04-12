@@ -387,6 +387,8 @@ def search_listing(request):
         response = urllib.request.urlopen(req)
         resp_json = response.read().decode('utf-8')
         resp = json.loads(resp_json)
+        if not 'result' in resp:
+            return render(request, "frontend/search_result.html", {'query': query})
         recall = resp['result']
         sorted_listings = [recall[0]]
         for i in range(1, len(recall)):
@@ -403,7 +405,7 @@ def search_listing(request):
         for item in sorted_listings:
             final_list.append(item["listing"])
 
-        messages.success(request, resp['raw_recall'])
+        #messages.success(request, resp['raw_recall'])
         if resp['ok']:
             return render(request, "frontend/search_result.html", {'query': query, 'result': final_list})
     return render(request, "frontend/search_result.html", {'query': query})
