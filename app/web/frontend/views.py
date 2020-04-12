@@ -94,11 +94,9 @@ def post_detail(request, pid):
     req = urllib.request.Request(url)
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
-    err = False
-    if "error status" in resp.keys():
-        resp.pop('seller')
-    resp.pop('url')
-    return render(request, "frontend/post_detail.html", {'post': resp, 'err': err})
+    if resp['ok']:
+        return render(request, "frontend/post_detail.html", {'post': resp})
+    return render(request, "frontend/post_detail.html")
 
 
 def sign_up(request):
@@ -174,12 +172,13 @@ def login(request):
     if not resp or not resp['ok']:
       # Couldn't log them in, send them back to login page with error
       form = LogInForm()
-      if (resp['err_code'] == 0):
-        messages.warning(request, "Username does not exist.")
-      elif (resp['err_code'] == 1):
-        messages.warning(request, "Your password does not match your username. Please try again.")
-      else:
-        messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request.")
+      if resp['err_code']:
+        if (resp['err_code'] == 0):
+            messages.warning(request, "Username does not exist.")
+        elif (resp['err_code'] == 1):
+            messages.warning(request, "Your password does not match your username. Please try again.")
+        else:
+            messages.warning(request, "We failed to reach a server or the server couldn\'t fulfill the request.")
       return render(request, 'frontend/login.html', {"form":form})
     
     #return HttpResponse(resp) ###added for debug
@@ -379,5 +378,34 @@ def profile_update(request):
     dummyuser.delete()
     return render(request, "frontend/profile_update.html", {"form" : null_form})
 
+def search_listing(request):
+    if request.method == 'POST':
+        query = request.POST.get('search')
+        data = {'query': query}
+        data = urllib.parse.urlencode(data).encode()
+        req = urllib.request.Request('http://exp:8000/search_listing/', data=data)
+        response = urllib.request.urlopen(req)
+        resp_json = response.read().decode('utf-8')
+        resp = json.loads(resp_json)
+        recall = resp['result']
+        sorted_listings = [recall[0]]
+        for i in range(1, len(recall)):
+            listing = recall[i]["listing"]
+            score = recall[i]["score"]
+            for j in range(0, len(sorted_listings)):
+                if score > sorted_listings[j]["score"]:
+                    sorted_listings.insert(j, recall[i])
+                    break
+                elif score < sorted_listings[len(sorted_listings)-1]["score"]:
+                    sorted_listings.append(recall[i])
+                    break
+        final_list = []
+        for item in sorted_listings:
+            final_list.append(item["listing"])
 
+        messages.success(request, resp['raw_recall'])
+        if resp['ok']:
+            return render(request, "frontend/search_result.html", {'query': query, 'result': final_list})
+    return render(request, "frontend/search_result.html", {'query': query})
 
+    

@@ -1,0 +1,22 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block title %} 
+UVA SwipeMe : Search Result
+{% endblock title %} 
+
+
+{% block content %}
+
+{% if result %}
+Search result for "{{ query }}"
+    {% for item in result %}
+        <a href="{% url 'frontend:post_detail' item.id %}"><h4>{{ item.title }}</h4></a>
+        <li>Pick up: {{ item.pickup_address }}</li>
+        <li>Price: {{ item.price }}</li>
+    {% endfor %}
+{% else %}
+No listing match "{{ query }}"
+{% endif %}
+
+{% endblock %}
