@@ -89,6 +89,15 @@ def show_special_posts(request):
     return render(request, 'frontend/special_posts.html', {'latest_post' : latest_post, 'flag' : str(flag),
                                                     "cheapest_post" : cheapest_post, "most_swipe_post" : most_swipe_post})
     '''
+
+def get_posts_by_seller(seller_id):
+    url = 'http://exp:8000/posts_by_seller/' + str(seller_id) + '/'
+    req = urllib.request.Request(url)
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    return resp
+
+
 def post_detail(request, pid):
     url = 'http://exp:8000/posts/' + str(pid) + "/"
     req = urllib.request.Request(url)
@@ -303,6 +312,9 @@ def profile(request):
     resp['date_joined'] = date_joined
     resp.pop('url')
     resp.pop('password')
+    posts = get_posts_by_seller(user_id)
+    if posts['ok']:
+        resp['posts'] = posts['posts']
 
     return render(request, "frontend/profile.html", resp)
 

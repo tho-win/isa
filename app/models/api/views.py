@@ -31,8 +31,14 @@ class AuthenticatorViewSet(viewsets.ModelViewSet):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-	queryset = Post.objects.all().order_by('-pub_date')
 	serializer_class = PostSerializer
+
+	def get_queryset(self):
+		queryset = queryset = Post.objects.all().order_by('-pub_date')
+		seller_id = self.request.query_params.get('seller_id', None)
+		if seller_id is not None:
+			queryset = queryset.filter(seller_id=seller_id)
+		return queryset
 
 
 class SchoolViewSet(viewsets.ModelViewSet):
