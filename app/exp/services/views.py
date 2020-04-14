@@ -309,12 +309,12 @@ def search_listing(request):
         # recall = es.search(index='listing_index', body={'query': {'query_string': {'query': query}}, 'size': 10})
         recall = es.search(index='listing_index', body={"query": {"function_score": {"query": {"query_string": {"query": query}},
             "field_value_factor": {"field": "visits","modifier": "log1p","missing": 0.1}}}})
-        # raw_recall = recall
+        raw_recall = recall
         if recall['hits']['total']['value'] == 0:
             return JsonResponse({'ok': False})
         else:
             recall = process_recall(recall['hits'])
-            ret = {'ok': True, 'result': recall}
+            ret = {'ok': True, 'result': recall, 'raw_recall': raw_recall['hits']['hits']}
             return JsonResponse(ret, safe=False)
     else: return JsonResponse({'return': 'not post'}, safe=False)
 

@@ -455,7 +455,7 @@ def search_listing(request):
             listing = recall[i]["listing"]
             score = recall[i]["score"]
             for j in range(0, len(sorted_listings)):
-                if score > sorted_listings[j]["score"]:
+                if score >= sorted_listings[j]["score"]:
                     sorted_listings.insert(j, recall[i])
                     break
                 elif score < sorted_listings[len(sorted_listings)-1]["score"]:
