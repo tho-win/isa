@@ -103,6 +103,22 @@ def post_detail(request, pid):
     req = urllib.request.Request(url)
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     resp = json.loads(resp_json)
+
+    if request.COOKIES.get('logged_in'):
+        data = {'user_id' : request.COOKIES.get('user_id'), 'listing_id' : pid}
+        data = urllib.parse.urlencode(data).encode()
+        view_req = urllib.request.Request('http://exp:8000/listing_views/', data=data)
+        try:
+            view_response = urllib.request.urlopen(view_req)
+        except urllib.error.URLError as e:
+            messages.info(request, "Updating access log failed!")
+            if resp['ok']:
+                return render(request, "frontend/post_detail.html", {'post': resp})
+            return render(request, "frontend/post_detail.html")
+        view_resp_json = view_response.read().decode('utf-8')
+        view_resp = json.loads(view_resp_json)
+        messages.info(request, view_resp['data'])
+
     if resp['ok']:
         return render(request, "frontend/post_detail.html", {'post': resp})
     return render(request, "frontend/post_detail.html")
@@ -417,7 +433,7 @@ def search_listing(request):
         for item in sorted_listings:
             final_list.append(item["listing"])
 
-        #messages.success(request, resp['raw_recall'])
+        messages.success(request, resp['raw_recall'])
         if resp['ok']:
             return render(request, "frontend/search_result.html", {'query': query, 'result': final_list})
     return render(request, "frontend/search_result.html", {'query': query})
