@@ -82,6 +82,18 @@ def get_post_by_id(pid):
     resp['ok'] = True
     return resp
 
+def get_posts_by_seller(request, seller_id):
+    url = 'http://models:8000/api/v1/post/?seller_id=' + str(seller_id)
+    req = urllib.request.Request(url)
+    try:
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    except HTTPError as e:
+        return JsonResponse({'ok': False}, safe=False)
+    resp = {}
+    resp['posts'] = json.loads(resp_json)
+    resp['ok'] = True
+    return JsonResponse(resp, safe=False)
+
 # def retrieve_user(request, uid):
 #     url = 'http://models:8000/api/v1/get_user/' + str(uid) + "/"
 #     req = urllib.request.Request(url)
