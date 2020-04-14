@@ -62,8 +62,8 @@ def get_user_by_username(username):
 
 def post_detail(request, pid):
     resp = get_post_by_id(pid)
-    data = {'id' : pid}
-    producer.send('listing-view-topic', json.dumps(data).encode('utf-8'))
+    # data = {'id' : pid}
+    # producer.send('listing-view-topic', json.dumps(data).encode('utf-8'))
     return JsonResponse(resp, safe=False)
     
 
@@ -184,6 +184,18 @@ def queue_listing(listing):
 
 
 @csrf_exempt
+def listing_views(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        listing_id = request.POST.get('listing_id')
+        data = {'user_id' : user_id, 'listing_id' : listing_id}
+        producer.send('listing-view-topic', json.dumps(data).encode('utf-8'))
+        return JsonResponse({'ok': True}, safe=False)
+    else:
+        return JsonResponse([{'result': 'not post'}], safe=False)
+
+
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -289,7 +301,6 @@ def delete_auth(request, auth):
         return JsonResponse({'error': 'Cannot delete auth'}, safe=False)
         
 
-
 @csrf_exempt
 def search_listing(request):
     if request.method == 'POST':
@@ -303,7 +314,7 @@ def search_listing(request):
             return JsonResponse({'ok': False})
         else:
             recall = process_recall(recall['hits'])
-            ret = {'ok': True, 'result': recall, 'raw_recall': str(raw_recall['hits']['hits'])}
+            ret = {'ok': True, 'result': recall, 'raw_recall': raw_recall['hits']['hits']}
             return JsonResponse(ret, safe=False)
     else: return JsonResponse({'return': 'not post'}, safe=False)
 
