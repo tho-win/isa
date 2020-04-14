@@ -190,7 +190,7 @@ def listing_views(request):
         listing_id = request.POST.get('listing_id')
         data = {'user_id' : user_id, 'listing_id' : listing_id}
         producer.send('listing-view-topic', json.dumps(data).encode('utf-8'))
-        return JsonResponse({'ok': True, 'data':str(data)}, safe=False)
+        return JsonResponse({'ok': True}, safe=False)
     else:
         return JsonResponse([{'result': 'not post'}], safe=False)
 
@@ -309,12 +309,12 @@ def search_listing(request):
         # recall = es.search(index='listing_index', body={'query': {'query_string': {'query': query}}, 'size': 10})
         recall = es.search(index='listing_index', body={"query": {"function_score": {"query": {"query_string": {"query": query}},
             "field_value_factor": {"field": "visits","modifier": "log1p","missing": 0.1}}}})
-        raw_recall = recall
+        # raw_recall = recall
         if recall['hits']['total']['value'] == 0:
             return JsonResponse({'ok': False})
         else:
             recall = process_recall(recall['hits'])
-            ret = {'ok': True, 'result': recall, 'raw_recall': str(raw_recall['hits']['hits'])}
+            ret = {'ok': True, 'result': recall}
             return JsonResponse(ret, safe=False)
     else: return JsonResponse({'return': 'not post'}, safe=False)
 

@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from urllib.error import URLError, HTTPError
-from frontend.forms import SignUpForm, LogInForm, CreatePostForm, ProfileUpdateForm
+from .forms import SignUpForm, LogInForm, CreatePostForm, ProfileUpdateForm
 from django.shortcuts import render, render_to_response
 from django.views.generic import TemplateView
 from .models import DummyUser
@@ -10,6 +10,32 @@ import urllib.request
 import urllib.parse
 import datetime
 import json
+
+
+def get_uid_by_auth(auth):
+    req = urllib.request.Request('http://exp:8000/authenticators/')
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    user_id = -1
+    for item in resp:
+        if item['authenticator'] == auth:
+            user_id = item['user_id']
+            break;
+    return user_id
+
+
+def get_username_by_auth(auth):
+    user_id = get_uid_by_auth(auth)
+    username_url = 'http://exp:8000/users/' + str(user_id) + "/"
+    req = urllib.request.Request(username_url)
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+    username = ""
+    if "error status" in resp.keys():
+        username = "NULL"
+        return username
+    username = resp['username']
+    return username
 
 
 def homepage(request):
@@ -105,7 +131,7 @@ def post_detail(request, pid):
     resp = json.loads(resp_json)
 
     if request.COOKIES.get('logged_in'):
-        data = {'user_id' : request.COOKIES.get('user_id'), 'listing_id' : pid}
+        data = {'user_id' : get_uid_by_auth(request.COOKIES.get('auth')), 'listing_id' : pid}
         data = urllib.parse.urlencode(data).encode()
         view_req = urllib.request.Request('http://exp:8000/listing_views/', data=data)
         try:
@@ -117,7 +143,6 @@ def post_detail(request, pid):
             return render(request, "frontend/post_detail.html")
         view_resp_json = view_response.read().decode('utf-8')
         view_resp = json.loads(view_resp_json)
-        messages.info(request, view_resp['data'])
 
     if resp['ok']:
         return render(request, "frontend/post_detail.html", {'post': resp})
@@ -132,6 +157,19 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             data = request.POST
+            if ' ' in form.cleaned_data.get("username"):
+                messages.warning(request, "Username contains illegal character. Please use another username.")
+                dummyuser = DummyUser.objects.create(
+                    email = form.cleaned_data.get("email"),
+                    username = form.cleaned_data.get("username"),
+                    first_name = form.cleaned_data.get("first_name"),
+                    last_name = form.cleaned_data.get("last_name"),
+                    computing_id = form.cleaned_data.get("computing_id"),
+                    phone_number = form.cleaned_data.get("phone_number"),
+                    bio = form.cleaned_data.get("bio"))
+                empty_form = SignUpForm(instance=dummyuser)
+                dummyuser.delete()
+                return render(request, 'frontend/signup.html', {'form': empty_form})
             data = urllib.parse.urlencode(data).encode()
             req = urllib.request.Request('http://exp:8000/create_user/', data=data)
             resp_json = urllib.request.urlopen(req).read().decode('utf-8')
@@ -220,8 +258,6 @@ def login(request):
          response = HttpResponseRedirect(mynext)
 
     response.set_cookie("auth", authenticator)
-    response.set_cookie("user_id", user_id)
-    response.set_cookie("username", username)
     response.set_cookie("first_name", first_name)
     response.set_cookie("logged_in", True)
     
@@ -257,8 +293,6 @@ def logout(request):
     response.delete_cookie("auth")
     response.delete_cookie("first_name")
     response.delete_cookie("logged_in")
-    response.delete_cookie("username")
-    response.delete_cookie("user_id")
     return response
 
 
@@ -287,8 +321,8 @@ def create_listing(request):
             data['remaining_nums'] = form.cleaned_data.get('remaining_nums')
             data['pickup_address'] = form.cleaned_data.get('pickup_address')
 
-            data['seller'] = request.COOKIES.get('username')
-            data['seller_id'] = request.COOKIES.get('user_id')
+            data['seller'] = get_username_by_auth(request.COOKIES.get('auth'))
+            data['seller_id'] = get_uid_by_auth(request.COOKIES.get('auth'))
 
             data = urllib.parse.urlencode(data).encode()
             req = urllib.request.Request('http://exp:8000/create_listing/', data=data)
@@ -315,8 +349,8 @@ def profile(request):
         messages.info(request, "Please log in your account to view your profile.")
         return HttpResponseRedirect(reverse("frontend:login") + "?next=" + reverse("frontend:profile"))
 
-    username = request.COOKIES.get('username')
-    user_id = request.COOKIES.get('user_id')
+    username = get_username_by_auth(auth)
+    user_id = get_uid_by_auth(auth)
     url = 'http://exp:8000/users/' + str(user_id) + "/"
     req = urllib.request.Request(url)
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
@@ -342,8 +376,8 @@ def profile_update(request):
         return HttpResponseRedirect(reverse("frontend:login") + "?next=" + reverse("frontend:profile"))
 
     # get current user information 
-    username = request.COOKIES.get('username')
-    user_id = request.COOKIES.get('user_id')
+    username = get_username_by_auth(auth)
+    user_id = get_uid_by_auth(auth)
     url = 'http://exp:8000/users/' + str(user_id) + "/"
     req = urllib.request.Request(url)
     resp_json = urllib.request.urlopen(req).read().decode('utf-8')
@@ -397,8 +431,6 @@ def profile_update(request):
 
             messages.success(request, "Your account has been updated.")
             response = HttpResponseRedirect(reverse("frontend:profile"))
-            #response.delete_cookie("username")
-            #response.delete_cookie("first_name")
             response.set_cookie("username", form.cleaned_data.get('username'))
             response.set_cookie("first_name", form.cleaned_data.get('first_name'))
             return response
@@ -433,7 +465,7 @@ def search_listing(request):
         for item in sorted_listings:
             final_list.append(item["listing"])
 
-        messages.success(request, resp['raw_recall'])
+        # messages.success(request, resp['raw_recall'])
         if resp['ok']:
             return render(request, "frontend/search_result.html", {'query': query, 'result': final_list})
     return render(request, "frontend/search_result.html", {'query': query})
