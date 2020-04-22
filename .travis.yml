@@ -16,8 +16,12 @@ before_script:
   - docker run --network=backend -it --name mysql-cmdline --link mysql:db mysql:latest
     mysql -uroot -p'$3cureUS' -h db -e "CREATE USER 'www'@'%' IDENTIFIED BY '\$3cureUS';CREATE DATABASE cs4501 CHARACTER SET utf8; GRANT ALL PRIVILEGES ON *.* TO 'www'@'%';"
   - docker start mysql
+  - docker network ls
+  - docker network connect app_backend mysql
   - cd app
 script:
   - docker-compose up
   - sleep 20
-  - docker-compose down
+  - docker ps -a
+after_script:
+  - docker-compose down -v
