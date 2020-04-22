@@ -7,9 +7,10 @@ services:
   - docker
 before_script: 
   - pip install docker-compose
-  - docker start mysql
+  - docker pull mysql:latest
+  - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS'  mysql:latest
   - cd app
 script:
   - docker-compose up
-  - sleep 50
+  - sleep 80
   - docker-compose down
