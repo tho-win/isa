@@ -7,5 +7,6 @@ services:
   - docker
 before_script: 
   - pip install docker-compose
+  - cd app
 script:
-  - docker-compose run app
+  - docker-compose up
