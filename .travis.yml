@@ -7,6 +7,9 @@ services:
   - docker
 before_script: 
   - pip install docker-compose
+  - docker start mysql
   - cd app
 script:
   - docker-compose up
+  - sleep 50
+  - docker-compose down
