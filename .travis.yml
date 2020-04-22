@@ -8,12 +8,12 @@ services:
   - mysql
 before_script: 
   - pip install docker-compose
-  - docker pull mysql:latest
+  - docker pull mysql:5.7.23
   - mkdir -p ~/cs4501/db
   - docker network create backend
-  - docker run --network=backend --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v ~/cs4501/db:/var/lib/mysql  mysql:latest
+  - docker run --network=backend --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v ~/cs4501/db:/var/lib/mysql  mysql:5.7.23
   - sleep 20
-  - docker run --network=backend -it --name mysql-cmdline --link mysql:db mysql:latest
+  - docker run --network=backend -it --name mysql-cmdline --link mysql:db mysql:5.7.23
     mysql -uroot -p'$3cureUS' -h db -e "CREATE USER 'www'@'%' IDENTIFIED BY '\$3cureUS';CREATE DATABASE cs4501 CHARACTER SET utf8; GRANT ALL PRIVILEGES ON *.* TO 'www'@'%';"
   - docker start mysql
   - cd app
