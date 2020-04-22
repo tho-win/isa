@@ -18,9 +18,8 @@ before_script:
   - docker start mysql
   - cd app
   - docker-compose up -d
-  - sleep 50
+  - sleep 40
   - docker-compose stop
-  - docker-compose rm
   - docker network ls
   - docker network connect app_backend mysql
 script:
