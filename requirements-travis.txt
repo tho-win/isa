@@ -1,0 +1,7 @@
+Django
+gunicorn
+selenium
+django-crispy-forms
+pytest
+Pillow
+tblib
