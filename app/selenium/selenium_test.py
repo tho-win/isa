@@ -67,6 +67,7 @@ class ASignUpTest(unittest.TestCase):
 	def test_a_sign_up_success(self):
 		self.driver.get("http://64.225.30.56:8000/signup/")
 		self.fill_out_sign_up()
+		time.sleep(5)
 		self.assertIn("Account created for test_user", self.driver.page_source)
 
 	def test_b_sign_up_email_taken(self):
