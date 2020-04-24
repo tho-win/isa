@@ -16,4 +16,5 @@ urlpatterns = [
     path('delete/auth/<str:auth>', views.delete_auth, name='delete_auth'),
     path('profile_update/', views.profile_update, name='profile_update'),
     path('search_listing/', views.search_listing, name='search_listing'),
+    path('listing_views/', views.listing_views, name='listing_views'),
 ]

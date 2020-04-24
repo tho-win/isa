@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch
 import json
 import time
 
-time.sleep(30)
+time.sleep(120)
 
 while True:
     try:
@@ -24,6 +24,10 @@ while True:
 while True:
     for message in consumer:
         new_item = json.loads((message.value).decode('utf-8'))
-        es.update(index='listing_index', doc_type='listing', id=new_item['id'] , body={ 'script' : 'ctx._source.visits += 1'})
+        es.update(index='listing_index', doc_type='listing', id=new_item['listing_id'] , body={ 'script' : 'ctx._source.visits += 1'})
+        entry = str(new_item['user_id']) + "," + str(new_item['listing_id']) + "\n"
+        file = open('access_log.csv', 'a')
+        file.write(entry)
+        file.close()
         es.indices.refresh(index="listing_index")
 
