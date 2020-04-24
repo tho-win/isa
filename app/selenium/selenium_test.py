@@ -226,7 +226,7 @@ class DCreatePostTest(unittest.TestCase):
 		search = self.driver.find_element_by_name("search")
 		search.send_keys(TITLE)
 		search.submit()
-		self.assertIn("Search result for \"Test post\"", self.driver.page_source)
+		self.assertIn("Search result for \"unique\"", self.driver.page_source)
 		self.assertIn(TITLE, self.driver.page_source)
 
 	def tearDown(self):
