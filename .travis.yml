@@ -7,7 +7,6 @@ services:
   - docker
   - mysql
 before_script: 
-  - pip install docker-compose
   - docker pull mysql:5.7.23
   - mkdir -p ~/cs4501/db
   - docker network create backend
@@ -20,8 +19,6 @@ before_script:
   - docker-compose up -d
   - sleep 10
   - docker-compose stop
-  - docker ps -a
-  - docker network ls
   - docker network connect app_backend mysql
 script:
   - docker-compose up -d

@@ -5,3 +5,4 @@ django-crispy-forms
 pytest
 Pillow
 tblib
+docker-compose
