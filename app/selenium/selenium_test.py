@@ -13,7 +13,7 @@ PASSWORD = "pAsswrd123!!"
 PHONE_NUMBER = "5555555555"
 BIO = "I'm a test user.!"
 
-TITLE = "Test post"
+TITLE = "unique"
 CONTENT = "content"
 PRICE = "8"
 SWIPES = "10"
