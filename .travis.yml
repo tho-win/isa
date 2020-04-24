@@ -18,15 +18,16 @@ before_script:
   - docker start mysql
   - cd app
   - docker-compose up -d
-  - sleep 40
+  - sleep 10
   - docker-compose stop
   - docker ps -a
   - docker network ls
   - docker network connect app_backend mysql
 script:
   - docker-compose up -d
-  - sleep 20
+  - sleep 10
 after_script:
   - docker ps -a
   - docker stop mysql
+  - python ./selenium/selenium_test.py
   - docker-compose down -v
