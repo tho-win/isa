@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch
 import json
 import time
 
-time.sleep(60)
+time.sleep(120)
 
 while True:
     try:
@@ -50,7 +50,7 @@ item3 = {"id": 3,
     "pickup_address": "On grounds only"}
     
 es.index(index='listing_index', doc_type='listing', id=item1['id'], body=item1)
-es.update(index='listing_index', doc_type='listing', id=item1['id'] , body={ 'script' : 'ctx._source.visits = 10'})
+es.update(index='listing_index', doc_type='listing', id=item1['id'] , body={ 'script' : 'ctx._source.visits = 0'})
 es.index(index='listing_index', doc_type='listing', id=item2['id'], body=item2)
 es.update(index='listing_index', doc_type='listing', id=item2['id'] , body={ 'script' : 'ctx._source.visits = 0'})
 es.index(index='listing_index', doc_type='listing', id=item3['id'], body=item3)

@@ -10,6 +10,7 @@ import urllib.request
 import urllib.parse
 import datetime
 import json
+import socket
 
 
 def get_uid_by_auth(auth):
@@ -20,7 +21,7 @@ def get_uid_by_auth(auth):
     for item in resp:
         if item['authenticator'] == auth:
             user_id = item['user_id']
-            break;
+            break
     return user_id
 
 
