@@ -11,6 +11,8 @@ services:
       - service_mesh
     volumes:
       - ./models:/app
+    #expose:
+    #  - "8000"
     ports:
       - "8001:8000"
     command: bash -c "pip install --upgrade pip && pip install djangorestframework && pip install Pillow &&
@@ -27,19 +29,34 @@ services:
       - public
     volumes:
       - ./exp:/app
+    #expose:
+    #  - "8000"
     ports:
       - "8002:8000"
     command: "mod_wsgi-express start-server --working-directory . --reload-on-changes ./exp/wsgi.py"
 
-  web:
+  web1:
     image: tp33/django
-    container_name: web
+    container_name: web1
     networks:
       - public
     volumes:
       - ./web:/app
     ports:
       - "8000:8000"
+    command: bash -c "pip install --upgrade pip && pip install django-crispy-forms &&
+                python manage.py makemigrations && python manage.py migrate &&
+                mod_wsgi-express start-server --working-directory . --reload-on-changes ./web/wsgi.py"
+
+  web2:
+    image: tp33/django
+    container_name: web2
+    networks:
+      - public
+    volumes:
+      - ./web:/app
+    ports:
+      - "8003:8000"
     command: bash -c "pip install --upgrade pip && pip install django-crispy-forms &&
                 python manage.py makemigrations && python manage.py migrate &&
                 mod_wsgi-express start-server --working-directory . --reload-on-changes ./web/wsgi.py"
@@ -92,7 +109,23 @@ services:
       - public
     ports:
       - "4444:4444"
-      
+
+  haproxy:
+    image: haproxy:1.7
+    container_name: haproxy
+    volumes:
+      - ./haproxy/:/usr/local/etc/haproxy/
+    depends_on:
+      - web1
+      - web2
+    networks:
+      - public
+    ports:
+      - "80:80"
+    environment:
+      - BACKENDS
+      - BALANCE=roundrobin
+
 networks:
   backend:
   service_mesh:
