@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch
 import json
 import time
 
-time.sleep(60)
+time.sleep(120)
 
 while True:
     try:
