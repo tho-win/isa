@@ -5,19 +5,12 @@ This is a group project for CS 4260: Internet Scale Application at University of
 
 Tho Nguyen (tnn7yc@virginia.edu); Erik Toor (evt8ed@virginia.edu); Haoran Zhu (hz3fr@virginia.edu)
 
-### Newest update for project 5: ###
+### Newest update for project 6: ###
 --------------
+- http://64.225.30.56/ is the newest URL for our app.
 
-**web container**: http://localhost:8000/search_listing is the page for users to search for listings by typing their queries
+- Integration tests are also developed for the above URL. 
 
-**batch container**: batch.py file is the script for adding newly created listings into kafka queuing system
-
-**access_log container**: post_view.py is the script for accumulating clicks on any particular listing, which are then used to determine the ranking for search results
-
-**Note:** 
-- We did NOT include user_id in the access log as we believe that it would be more reasonable to also include non-logged in users' clicks when considering ranking.
-
-- It might take a while for scripts in batch/access_log container to process the addition to queue and for the queue to add those items into ES.
 
 ### Useful URLs to naivgate the app: ###
 --------------
@@ -57,3 +50,15 @@ http://localhost:8001/api/v1/user/ GET to show all User intances, POST to add cr
 http://localhost:8001/api/v1/user/1/ GET to show user with id=1, PUT to edit or DELETE to delete user instance
 
 Similarly, replace "user" keyword with "post" or "school" to play with Post, School models :)
+
+
+**web container**: http://localhost:8000/search_listing is the page for users to search for listings by typing their queries
+
+**batch container**: batch.py file is the script for adding newly created listings into kafka queuing system
+
+**access_log container**: post_view.py is the script for accumulating clicks on any particular listing, which are then used to determine the ranking for search results
+
+**Note:** 
+- We did NOT include user_id in the access log as we believe that it would be more reasonable to also include non-logged in users' clicks when considering ranking.
+
+- It might take a while for scripts in batch/access_log container to process the addition to queue and for the queue to add those items into ES.
