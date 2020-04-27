@@ -11,6 +11,12 @@ Tho Nguyen (tnn7yc@virginia.edu); Erik Toor (evt8ed@virginia.edu); Haoran Zhu (h
 
 - Integration tests are also developed for the above URL. 
 
+- When you make a commit, it takes 4-5 minutes for Travic CI to test the build. 
+
+- Integration tests are run in Travic CI using the command: "python ./selenium/selenium_test.py". So look the results under that command for integration test results.
+
+- Unit tests are included in docker compose.
+
 
 ### Useful URLs to naivgate the app: ###
 --------------
