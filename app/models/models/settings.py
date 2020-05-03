@@ -25,7 +25,7 @@ SECRET_KEY = 'jrk-g+@u9+teiy0!)683v4467hrfkk8ot4+u4on)dlio!i%6=('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['models', 'localhost']
+ALLOWED_HOSTS = ['models', 'localhost', '64.225.30.56']
 
 
 # Application definition

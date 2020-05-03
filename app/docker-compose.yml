@@ -42,6 +42,8 @@ services:
       - public
     volumes:
       - ./web:/app
+    #expose:
+    #  - "8000"
     ports:
       - "8000:8000"
     command: bash -c "pip install --upgrade pip && pip install django-crispy-forms &&
@@ -55,6 +57,8 @@ services:
       - public
     volumes:
       - ./web:/app
+    #expose:
+    #  - "8000"
     ports:
       - "8003:8000"
     command: bash -c "pip install --upgrade pip && pip install django-crispy-forms &&
@@ -80,6 +84,8 @@ services:
     networks:
         - service_mesh
         - batch_network
+    #expose:
+    #  - "9200"
     ports:
         - "9200:9200"
 
@@ -107,6 +113,8 @@ services:
     networks:
       - service_mesh
       - public
+    #expose:
+    #  - "4444"
     ports:
       - "4444:4444"
 
