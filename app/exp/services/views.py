@@ -23,7 +23,13 @@ def show_all_users(request):
 
 def show_all_posts(request):
     req = urllib.request.Request('http://models:8000/api/v1/post/')
-    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    # resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    try:
+        response = urllib.request.urlopen(req)
+    except urllib.error.URLError as e:
+        err_resp = {"ok": False, "error status" : e.code, "error reason": e.reason}
+        return JsonResponse(err_resp, safe=False)
+    resp_json = response.read().decode('utf-8')
     resp = json.loads(resp_json)
     for p in resp:
         seller = get_user_by_username(p['seller'])
