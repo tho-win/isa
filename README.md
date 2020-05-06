@@ -5,18 +5,14 @@ This is a group project for CS 4260: Internet Scale Application at University of
 
 Tho Nguyen (tnn7yc@virginia.edu); Erik Toor (evt8ed@virginia.edu); Haoran Zhu (hz3fr@virginia.edu)
 
-### Newest update for project 6: ###
+### Newest update for project 7: ###
 --------------
-- http://64.225.30.56/ is the newest URL for our app.
 
-- Integration tests are also developed for the above URL. 
+- recommendation.py is responsible for extracting recommendation info from access log and organizing them into a recommendation table. Both recommendation.py and access log are in access_log folder.
 
-- When you make a commit, it takes 4-5 minutes for Travic CI to test the build. 
+- Recommendation table is created every time recommendation.py runs. It's then saved to recommendation_table.csv.
 
-- Integration tests are run in Travic CI using the command: "python ./selenium/selenium_test.py". So look the results under that command for integration test results.
-
-- Unit tests are included in docker compose.
-
+- automate.sh runs recommendation.py automatically every two minutes. It's in app folder.
 
 ### Useful URLs to naivgate the app: ###
 --------------
@@ -68,3 +64,13 @@ Similarly, replace "user" keyword with "post" or "school" to play with Post, Sch
 - We did NOT include user_id in the access log as we believe that it would be more reasonable to also include non-logged in users' clicks when considering ranking.
 
 - It might take a while for scripts in batch/access_log container to process the addition to queue and for the queue to add those items into ES.
+
+- http://64.225.30.56/ is the newest URL for our app.
+
+- Integration tests are also developed for the above URL. 
+
+- When you make a commit, it takes 4-5 minutes for Travic CI to test the build. 
+
+- Integration tests are run in Travic CI using the command: "python ./selenium/selenium_test.py". So look the results under that command for integration test results.
+
+- Unit tests are included in docker compose.
