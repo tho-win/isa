@@ -41,6 +41,7 @@ massclicks = distinct.filter(lambda pair: pair[1] >= 3) 	# only include pairs wi
 output = massclicks.collect()
 
 print("======================================================================================================================")
+print("***printing output: ")
 for item in output:
 	print(item)
 print(str(output))
