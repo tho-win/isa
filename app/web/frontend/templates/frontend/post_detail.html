@@ -12,14 +12,40 @@ UVA SwipeMe : Post Detail
     <h2 style="text-align: center">Listing not found!</h2>
 {% else %}
     <ul>
+        <h3>{{ post.title }}</h3>
+        <p>by <a href="{% url 'frontend:user_detail' post.seller.0.id %}">{{ post.seller.0.first_name }} {{ post.seller.0.last_name }}</a></p>
+        <h6>{{ post.content }}</h6>
+        <li>Price: ${{ post.price }}</li>
+        <li>Pick up at: {{ post.pickup_address }}</li>
+        <li>Remaining swipe: {{ post.remaining_nums }}</li>
+        <li>Posted on: {{ post.pub_date|slice:"0:10" }}</li>
+        <!--
     {% for key, value in post.items %}
     {% if key == 'seller' %}
         <li>{{ key }}: <a href="{% url 'frontend:user_detail' value.0.id %}">{{ value.0.first_name }} {{ value.0.last_name }}</a> </li>
     {% else %}
-        <li>{{ key }}: {{ value }}</li>
+        {% if key != 'url' and key != 'id'%}
+            <li>{{ key }}: {{ value }}</li>
+        {% endif %}
     {% endif %}
     {% endfor %}
+        -->
     </ul>
+
+    {% if recommendations %}
+        <b>People who looked at this listing also looked at:</b>
+        <div class="row" style="margin: 5px; align-items: center;">
+          {% for recomm in recommendations %}
+          <div style="margin-left: 5%; margin-bottom: 2%; width: 300px;">
+            <b><a href="{% url 'frontend:post_detail' recomm.id %}">{{ recomm.title }}</a></b>
+          <li>Pick-up Address: {{ recomm.pickup_address }}</li>
+          <li>Price: ${{ recomm.price }}</li>
+          </div>
+          {% endfor %}
+        </div>
+    {% else %}
+        <b>There are currently no recommendations available for this listing.</b>
+    {% endif %}
 
 {% endif %}
 

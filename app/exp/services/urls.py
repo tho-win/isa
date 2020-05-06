@@ -17,4 +17,5 @@ urlpatterns = [
     path('profile_update/', views.profile_update, name='profile_update'),
     path('search_listing/', views.search_listing, name='search_listing'),
     path('listing_views/', views.listing_views, name='listing_views'),
+    path('get_recomm/<int:pid>/', views.get_recomm, name='get_recomm'),
 ]
