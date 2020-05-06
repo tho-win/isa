@@ -337,3 +337,25 @@ def process_recall(recall):
     return ret
 
 
+@csrf_exempt
+def get_recomm(request, pid):
+    url = "http://models:8000/get_recomm/" + str(pid) + "/"
+    req = urllib.request.Request(url)
+    try:
+        response = urllib.request.urlopen(req)
+    except urllib.error.URLError as e:
+        return JsonResponse({'ok': False, 'err_reason': e.reason}, safe=False)
+    else:
+        resp_json = response.read().decode('utf-8')
+        resp = json.loads(resp_json)
+        if resp['ok']:
+            co_views = json.loads(resp['co_views'])
+            co_view_list = []
+            for co_view in co_views:
+                post_resp = get_post_by_id(co_view)
+                co_view_list.append(post_resp)
+            return JsonResponse({'ok': True, 'recomm': co_view_list}, safe=False)
+        else:
+            return JsonResponse({'ok': False}, safe=False)
+
+

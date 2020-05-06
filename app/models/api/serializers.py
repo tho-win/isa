@@ -22,3 +22,9 @@ class SchoolSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = School
 		fields = ('id', 'url', 'name', 'city', 'state')
+
+
+class RecommendationSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Recommendation
+		fields = ('item', 'co_views')

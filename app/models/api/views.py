@@ -8,6 +8,8 @@ from .serializers import *
 from django.core import serializers as core_serializers
 from .models import *
 from rest_framework.decorators import action
+import json
+from django.core.exceptions import ObjectDoesNotExist
 
 class CustomUserViewSet(viewsets.ModelViewSet):
 	serializer_class = CustomUserSerializer
@@ -42,8 +44,13 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class SchoolViewSet(viewsets.ModelViewSet):
-	queryset = School.objects.all().order_by('name')
+	queryset = School.objects.all()
 	serializer_class = SchoolSerializer
+
+
+class RecommendationViewSet(viewsets.ModelViewSet):
+	queryset = Recommendation.objects.all()
+	serializer_class = RecommendationSerializer
 
 
 def get_user(request, uid):
@@ -60,5 +67,44 @@ def get_user(request, uid):
 		return JsonResponse({'ok': True}, safe=False) 
 	else:
 		return JsonResponse({'ok': False, 'result': 'not post'}, safe=False)
+
+
+def delete_recomm(request):
+	all_recomms = Recommendation.objects.all()
+	for recomm in all_recomms:
+		recomm.delete()
+	return JsonResponse({'ok': True}, safe=False) 
+
+
+@csrf_exempt
+def create_recomm(request):
+	if request.method == 'POST':
+		item_recomm = json.loads(request.POST.get('data'))
+		for key in item_recomm:
+			item_id = int(key)
+			curr_item = Post.objects.filter(id = item_id)[0]
+			curr_recomm = Recommendation.objects.create(
+				item = curr_item,
+				co_views = json.dumps(item_recomm[key]))
+			curr_recomm.save()
+		return JsonResponse({'ok': True}, safe=False)
+	else:
+		return JsonResponse({'ok': False, 'result': 'not post'}, safe=False)
+
+
+@csrf_exempt
+def get_recomm(request, pid):
+	item = Post.objects.filter(id = pid)[0]
+	try:
+		item.recommendation
+	except ObjectDoesNotExist:
+		return JsonResponse({'ok': False}, safe=False)
+	else:	
+		return JsonResponse({'ok': True, 'co_views': item.recommendation.co_views}, safe=False)
+
+
+
+
+
 
 

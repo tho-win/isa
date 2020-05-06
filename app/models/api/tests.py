@@ -178,9 +178,9 @@ class APITest(TestCase):
 		self.assertEqual(len(response_after_delete.json()),1)
 		self.assertNotContains(response_after_delete, "temp content")
 
-	def test_success_response_json_format(self):
-		response = self.client.get("http://models:8000/api/v1/school/?format=json")
-		self.assertEqual(response.json()[0]["name"], "UVA")
+	# def test_success_response_json_format(self):
+	# 	response = self.client.get("http://models:8000/api/v1/school/?format=json")
+	# 	self.assertEqual(response.json()[0]["name"], "UVA")
 
 	def test_failed_response_wrong_pk_no_instance(self):
 		response = self.client.get(reverse("customuser-detail", kwargs={"pk":9999}))

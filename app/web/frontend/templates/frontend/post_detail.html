@@ -21,6 +21,21 @@ UVA SwipeMe : Post Detail
     {% endfor %}
     </ul>
 
+    {% if recommendations %}
+        <b>People who looked at this listing also looked at:</b>
+        <div class="row" style="margin: 5px; align-items: center;">
+          {% for recomm in recommendations %}
+          <div style="margin-left: 5%; margin-bottom: 2%; width: 300px;">
+            <b><a href="{% url 'frontend:post_detail' recomm.id %}">{{ recomm.title }}</a></b>
+          <li>Pick-up Address: {{ recomm.pickup_address }}</li>
+          <li>Price: ${{ recomm.price }}</li>
+          </div>
+          {% endfor %}
+        </div>
+    {% else %}
+        <b>There are currently no recommendations available for this listing.</b>
+    {% endif %}
+
 {% endif %}
 
 {% endblock content %}

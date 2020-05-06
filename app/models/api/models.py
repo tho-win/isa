@@ -65,4 +65,12 @@ class Authenticator(models.Model):
     user_id = models.IntegerField()
     date_created = models.DateTimeField(default=timezone.now)
 
+
+class Recommendation(models.Model):
+    item = models.OneToOneField(Post, on_delete=models.CASCADE)
+    co_views = models.CharField(max_length=3000, default="")
+
+    def __str__(self):
+        return "item ID: " + str(self.item.id) + "; co-views: " + self.co_views
+
     

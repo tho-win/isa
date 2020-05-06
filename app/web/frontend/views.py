@@ -160,8 +160,25 @@ def post_detail(request, pid):
         view_resp = json.loads(view_resp_json)
 
     if resp['ok']:
-        return render(request, "frontend/post_detail.html", {'post': resp})
-    return render(request, "frontend/post_detail.html")
+        recomm_url = 'http://exp:8000/get_recomm/' + str(pid) + '/'
+        recomm_req = urllib.request.Request(recomm_url)
+        try:
+            recomm_response = urllib.request.urlopen(recomm_req)
+        except urllib.error.URLError as e:
+            messages.warning(request, "failed to load recommendations in exp layer")
+            return render(request, "frontend/post_detail.html", {'post': resp})
+        else:
+            recomm_resp_json = recomm_response.read().decode('utf-8')
+            recomm_resp = json.loads(recomm_resp_json)
+            if recomm_resp['ok']:
+                recommendations = recomm_resp['recomm']
+                return render(request, "frontend/post_detail.html", {'post': resp, 'recommendations': recommendations})
+            else:
+                if 'err_reason' in recomm_resp:
+                    messages.warning(request, "failed to load recommendations in model layer")
+                return render(request, "frontend/post_detail.html", {'post': resp})
+    else:
+        return render(request, "frontend/post_detail.html") 
 
 
 def sign_up(request):
